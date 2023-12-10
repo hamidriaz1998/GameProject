@@ -8,23 +8,23 @@ void drawBoard();
 void erasePlayer();
 void printPlayer();
 void movePlayer(char board[][90], char direction);
-int pX = 20, pY = 20;
+int pX = 20, pY = 20, pHealth = 5;
 // Enemies 
 // Enemy 1
 void eraseEnemy1();
 void printEnemy1();
 void moveEnemy1(char board[][90], char direction);
-int e1X = 2, e1Y = 2;
+int e1X = 2, e1Y = 2, e1Health = 5;
 // Enemy 2
 void eraseEnemy2();
 void printEnemy2();
 void moveEnemy2(char board[][90], char direction);
-int e2X = 2, e2Y = 2;
+int e2X = 2, e2Y = 2, e2Health = 5;
 // Enemy 3
 void eraseEnemy3();
 void printEnemy3();
 void moveEnemy3(char board[][90], char direction);
-int e3X = 2, e3Y = 2;
+int e3X = 2, e3Y = 2, e3Health = 5;
 
 const int playerHeight = 5;
 const int playerWidth = 9;
