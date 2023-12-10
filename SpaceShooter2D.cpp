@@ -1,5 +1,5 @@
 #include <iostream>
-#include <windows.h> 
+#include <windows.h>
 using namespace std;
 void gotoxy(int x, int y);
 // Board
@@ -215,11 +215,11 @@ int main()
         else if (collision3)
         {
             eraseEnemy3();
-            if (e3Health != 0)
+            if (e3Health != 0) // Sometimes some hitboxes remain and the health goes to -1 and beyond
                 e3Health--;
             collision3 = false;
         }
-        if (!e1Fire)
+        if (!e1Fire && !(e1Health <= 0))
         {
             enemy1Fire();
             e1Fire = true;
@@ -232,7 +232,7 @@ int main()
             }
             moveEnemy1Fire();
         }
-        if (!e2Fire)
+        if (!e2Fire && !(e2Health <= 0))
         {
             enemy2Fire();
             e2Fire = true;
@@ -245,7 +245,7 @@ int main()
             }
             moveEnemy2Fire();
         }
-        if (!e3Fire)
+        if (!e3Fire && !(e3Health <= 0))
         {
             enemy3Fire();
             e3Fire = true;
@@ -264,10 +264,26 @@ int main()
                     pHealth--;
                 pcollision = false;
             }
-            Sleep(50);
+        }
+        Sleep(50);
+        if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
+        {
+            break;
         }
     }
-    return 1;
+    if (pHealth == 0)
+    {
+        system("cls");
+        gotoxy(0, 0);
+        cout << "Game Over";
+    }
+    else
+    {
+        system("cls");
+        gotoxy(0, 0);
+        cout << "You Win";
+    }
+    return 0;
 }
 void gotoxy(int x, int y)
 {
