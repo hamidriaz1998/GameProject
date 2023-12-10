@@ -9,10 +9,13 @@ void erasePlayer();
 void printPlayer();
 void movePlayer(char direction);
 void createPlayerHitbox();
-void playerFire();
-void moveFire();
 int pX = 0, pY = 0, pHealth = 5;
-bool pFire = false;
+// Player Fire
+void playerFire();
+void movePlayerFire();
+void erasePlayerFire();
+void printPlayerFire();
+bool pFire = false, pcollision = false;
 // Enemies
 void createEnemyHitbox();
 // Enemy 1
@@ -21,21 +24,21 @@ void printEnemy1();
 void changeDirectionEnemy1(char &direction);
 void moveEnemy1(char direction);
 int e1X = 0, e1Y = 0, e1Health = 5;
-bool e1Fire = false;
+bool e1Fire = false, collision1 = false;
 // Enemy 2
 void eraseEnemy2();
 void printEnemy2();
 void changeDirectionEnemy2(char &direction);
 void moveEnemy2(char direction);
 int e2X = 0, e2Y = 0, e2Health = 5;
-bool e2Fire = false;
+bool e2Fire = false, collision2 = false;
 // Enemy 3
 void eraseEnemy3();
 void printEnemy3();
 void changeDirectionEnemy3(char &direction);
 void moveEnemy3(char direction);
 int e3X = 0, e3Y = 0, e3Health = 5;
-bool e3Fire = false;
+bool e3Fire = false, collision3 = false;
 
 const int playerHeight = 5;
 const int playerWidth = 9;
@@ -124,18 +127,10 @@ int main()
         if (GetAsyncKeyState(VK_LEFT))
         {
             movePlayer('l');
-            // Testing
-            // moveEnemy1(board, 'l');
-            // moveEnemy2(board, 'l');
-            // moveEnemy3(board, 'l');
         }
         else if (GetAsyncKeyState(VK_RIGHT))
         {
             movePlayer('r');
-            // Testing
-            // moveEnemy1(board, 'r');
-            // moveEnemy2(board, 'r');
-            // moveEnemy3(board, 'r');
         }
         else if (GetAsyncKeyState(VK_SPACE))
         {
@@ -149,7 +144,7 @@ int main()
         if (e1Health != 0)
         {
             changeDirectionEnemy1(dir1);
-            // moveEnemy1(dir1);
+            moveEnemy1(dir1);
         }
         if (e2Health != 0)
         {
@@ -163,6 +158,28 @@ int main()
         }
         createEnemyHitbox();
 
+        if (pFire)
+        {
+            movePlayerFire();
+        }
+        if (collision1)
+        {
+            eraseEnemy1();
+            e1Health--;
+            collision1 = false;
+        }
+        if (collision2)
+        {
+            eraseEnemy2();
+            e2Health--;
+            collision2 = false;
+        }
+        if (collision3)
+        {
+            eraseEnemy3();
+            e3Health--;
+            collision3 = false;
+        }
         Sleep(100);
     }
 
@@ -251,7 +268,8 @@ void movePlayer(char direction)
     board[pX][pY] = 'p';
     printPlayer();
 }
-void createPlayerHitbox(){
+void createPlayerHitbox()
+{
     for (int i = 0; i < 6; i++)
     {
         board[pX][pY + i] = '.';
@@ -265,29 +283,90 @@ void playerFire()
         {
             if (board[i][j] == 'p')
             {
-                board[i-1][j] = '|';
+                board[i - 1][j] = '|';
             }
         }
     }
 }
-void moveFire() { // the idea for collsion detection is to create a function that checks if in surrounding cells there is an enemy character
-    for (int i = 1; i < 10; i++) {
-        for (int j = 0; j < 21; j++) {
-            if (board[i][j] == '|') {
-                if (board[i-1][j] != '#') { // If the cell above is not a wall
-                    if (board[i-1][j] == 'e') { // If the cell above is an enemy
-                        // Remove the enemy and the fire
+void movePlayerFire()
+{
+    bool foundFire = false;
+    erasePlayerFire(); 
+    for (int i = 1; i < 10; i++)
+    {
+        for (int j = 0; j < 21; j++)
+        {
+            if (board[i][j] == '|')
+            {
+                foundFire = true;
+                if (board[i - 1][j] != '#')
+                {
+                    if (board[i - 1][j] == 'X' || board[i - 1][j] == ',')
+                    { // Enemy 1
+                        collision1 = true;
                         board[i][j] = ' ';
-                        board[i-1][j] = ' ';
-                    } else {
+                        board[i - 1][j] = ' ';
+                    }
+                    else if (board[i - 1][j] == 'Y' || board[i - 1][j] == ';')
+                    { // Enemy 2
+                        collision2 = true;
+                        board[i][j] = ' ';
+                        board[i - 1][j] = ' ';
+                    }
+                    else if (board[i - 1][j] == 'Z' || board[i - 1][j] == '~')
+                    { // Enemy 3
+                        collision3 = true;
+                        board[i][j] = ' ';
+                        board[i - 1][j] = ' ';
+                    }
+                    else
+                    {
                         // Move the fire up
                         board[i][j] = ' ';
-                        board[i-1][j] = '|';
+                        board[i - 1][j] = '|';
                     }
-                } else {
+                }
+                else
+                {
                     // Remove the fire if it hits a wall
                     board[i][j] = ' ';
                 }
+                break;
+            }
+        }
+        if (foundFire)
+        {
+            break;
+        }
+    }
+    printPlayerFire();
+}
+void erasePlayerFire()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 21; j++)
+        {
+            if (board[i][j] == '|')
+            {
+                gotoxy(j, i);
+                cout << " ";
+                break;
+            }
+        }
+    }
+}
+void printPlayerFire()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 21; j++)
+        {
+            if (board[i][j] == '|')
+            {
+                gotoxy(j, i);
+                cout << board[i][j];
+                break;
             }
         }
     }
@@ -296,9 +375,9 @@ void createEnemyHitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[e1X + 4][e1Y + i] = '.';
-        board[e2X + 4][e2Y + i] = '.';
-        board[e3X + 4][e3Y + i] = '.';
+        board[e1X + 4][e1Y + i] = ',';
+        board[e2X + 4][e2Y + i] = ';';
+        board[e3X + 4][e3Y + i] = '~';
     }
 }
 void printEnemy1()
