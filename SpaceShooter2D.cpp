@@ -67,6 +67,8 @@ int e3FireX = 0, e3FireY = 0;
 bool e3Fire = false, collision3 = false;
 // Error Handling
 bool inBoard(char);
+// Score
+int score = 0;
 
 const int playerHeight = 5;
 const int playerWidth = 9;
@@ -189,6 +191,8 @@ int main()
         cout << "Enemy 3 Health: " << e3Health << "   ";
         gotoxy(100, 3);
         cout << "Player Health: " << pHealth << "   ";
+        gotoxy(100, 4);
+        cout << "Score: " << score << "   ";
 
         if (pFire)
         {
@@ -200,6 +204,7 @@ int main()
         }
         if (collision1)
         {
+            score += 10;
             eraseEnemy1();
             if (e1Health != 0)
                 e1Health--;
@@ -207,6 +212,7 @@ int main()
         }
         else if (collision2)
         {
+            score += 10;
             eraseEnemy2();
             if (e2Health != 0)
                 e2Health--;
@@ -214,6 +220,7 @@ int main()
         }
         else if (collision3)
         {
+            score += 10;
             eraseEnemy3();
             if (e3Health != 0) // Sometimes some hitboxes remain and the health goes to -1 and beyond
                 e3Health--;
@@ -259,6 +266,7 @@ int main()
             moveEnemy3Fire();
             if (pcollision)
             {
+                score -= 10;
                 erasePlayer();
                 if (pHealth != 0)
                     pHealth--;
@@ -271,17 +279,17 @@ int main()
             break;
         }
     }
+    system("cls");
+    gotoxy(0, 0);
     if (pHealth == 0)
     {
-        system("cls");
-        gotoxy(0, 0);
-        cout << "Game Over";
+        cout << "Game Over" << endl;
+        cout << "Your Score is " << score;
     }
     else
     {
-        system("cls");
-        gotoxy(0, 0);
-        cout << "You Win";
+        cout << "You Win" << endl;
+        cout << "Your Score is " << score;
     }
     return 0;
 }
