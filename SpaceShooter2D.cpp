@@ -402,7 +402,7 @@ void erasePlayerHitbox()
 void playerFire()
 {
     pFireX = pX - 1;
-    pFireY = pY;
+    pFireY = pY + 3;
     board[pFireX][pFireY] = '|';
 }
 void movePlayerFire()
@@ -563,7 +563,7 @@ void moveEnemy1(char direction)
 void enemy1Fire()
 {
     e1FireX = e1X + 4;
-    e1FireY = e1Y;
+    e1FireY = e1Y + 3;
     board[e1FireX][e1FireY] = '!';
 }
 void moveEnemy1Fire()
@@ -711,7 +711,7 @@ void moveEnemy2(char direction)
 void enemy2Fire()
 {
     e2FireX = e2X + 4;
-    e2FireY = e2Y;
+    e2FireY = e2Y + 3;
     board[e2FireX][e2FireY] = 'I';
 }
 void moveEnemy2Fire()
@@ -859,7 +859,7 @@ void moveEnemy3(char direction)
 void enemy3Fire()
 {
     e3FireX = e3X + 4;
-    e3FireY = e3Y;
+    e3FireY = e3Y + 3;
     board[e3FireX][e3FireY] = '[';
 }
 void moveEnemy3Fire()
