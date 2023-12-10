@@ -20,12 +20,12 @@ void printPlayerFire();
 int pFireX = 0, pFireY = 0;
 bool pFire = false, pcollision = false;
 // Enemies
-void createEnemyHitbox();
-void eraseEnemyHitbox();
 // Enemy 1
 void eraseEnemy1();
 void printEnemy1();
 void changeDirectionEnemy1(char &direction);
+void createEnemy1Hitbox();
+void eraseEnemy1Hitbox();
 void moveEnemy1(char direction);
 int e1X = 0, e1Y = 0, e1Health = 5;
 bool e1Fire = false, collision1 = false;
@@ -33,6 +33,8 @@ bool e1Fire = false, collision1 = false;
 void eraseEnemy2();
 void printEnemy2();
 void changeDirectionEnemy2(char &direction);
+void createEnemy2Hitbox();
+void eraseEnemy2Hitbox();
 void moveEnemy2(char direction);
 int e2X = 0, e2Y = 0, e2Health = 5;
 bool e2Fire = false, collision2 = false;
@@ -40,6 +42,8 @@ bool e2Fire = false, collision2 = false;
 void eraseEnemy3();
 void printEnemy3();
 void changeDirectionEnemy3(char &direction);
+void createEnemy3Hitbox();
+void eraseEnemy3Hitbox();
 void moveEnemy3(char direction);
 int e3X = 0, e3Y = 0, e3Health = 5;
 bool e3Fire = false, collision3 = false;
@@ -142,23 +146,27 @@ int main()
                 pFire = true;
             }
         }
-        if (e1Health != 0)
+        if (!(e1Health <= 0))
         {
             changeDirectionEnemy1(dir1);
             moveEnemy1(dir1);
         }
-        if (e2Health != 0)
+        if (!(e2Health <= 0))
         {
             changeDirectionEnemy2(dir2);
             moveEnemy2(dir2);
         }
-        if (e3Health != 0)
+        if (!(e3Health <= 0))
         {
             changeDirectionEnemy3(dir3);
             moveEnemy3(dir3);
         }
-        eraseEnemyHitbox();
-        createEnemyHitbox();
+        gotoxy(100,0);
+        cout<<"Enemy 1 Health: "<<e1Health<<"   ";
+        gotoxy(100,1);
+        cout<<"Enemy 2 Health: "<<e2Health<<"   ";
+        gotoxy(100,2);
+        cout<<"Enemy 3 Health: "<<e3Health<<"   ";
 
         if (pFire)
         {
@@ -378,22 +386,18 @@ void printPlayerFire()
         }
     }
 }
-void createEnemyHitbox()
+void createEnemy1Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
         board[e1X + 4][e1Y + i] = ',';
-        board[e2X + 4][e2Y + i] = ';';
-        board[e3X + 4][e3Y + i] = '~';
     }
 }
-void eraseEnemyHitbox()
+void eraseEnemy1Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
         board[e1X + 4][e1Y + i] = ' ';
-        board[e2X + 4][e2Y + i] = ' ';
-        board[e3X + 4][e3Y + i] = ' ';
     }
 }
 void printEnemy1()
@@ -432,6 +436,7 @@ void changeDirectionEnemy1(char &direction)
 void moveEnemy1(char direction)
 {
     eraseEnemy1();
+    eraseEnemy1Hitbox();
     board[e1X][e1Y] = ' ';
     if (direction == 'l')
     {
@@ -443,8 +448,22 @@ void moveEnemy1(char direction)
     }
     board[e1X][e1Y] = 'X';
     printEnemy1();
+    createEnemy1Hitbox();
 }
-
+void createEnemy2Hitbox()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        board[e2X + 4][e2Y + i] = ';';
+    }
+}
+void eraseEnemy2Hitbox()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        board[e2X + 4][e2Y + i] = ' ';
+    }
+}
 void printEnemy2()
 {
     for (int i = 0; i < enemyHeight; i++)
@@ -481,6 +500,7 @@ void changeDirectionEnemy2(char &direction)
 void moveEnemy2(char direction)
 {
     eraseEnemy2();
+    eraseEnemy2Hitbox();
     board[e2X][e2Y] = ' ';
     if (direction == 'l')
     {
@@ -492,6 +512,21 @@ void moveEnemy2(char direction)
     }
     board[e2X][e2Y] = 'Y';
     printEnemy2();
+    createEnemy2Hitbox();
+}
+void createEnemy3Hitbox()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        board[e3X + 4][e3Y + i] = '~';
+    }
+}
+void eraseEnemy3Hitbox()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        board[e3X + 4][e3Y + i] = ' ';
+    }
 }
 void printEnemy3()
 {
@@ -529,6 +564,7 @@ void changeDirectionEnemy3(char &direction)
 void moveEnemy3(char direction)
 {
     eraseEnemy3();
+    eraseEnemy3Hitbox();
     board[e3X][e3Y] = ' ';
     if (direction == 'l')
     {
@@ -540,4 +576,5 @@ void moveEnemy3(char direction)
     }
     board[e3X][e3Y] = 'Z';
     printEnemy3();
+    createEnemy3Hitbox();
 }
