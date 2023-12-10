@@ -1,5 +1,5 @@
 #include <iostream>
-#include <windows.h> // If enemy hits the bullet from the side it the bullet cannot be fired again, Probably should add hitboxes at sides too. and also look for then on sides in conditions.
+#include <windows.h> 
 using namespace std;
 void gotoxy(int x, int y);
 // Board
@@ -65,6 +65,8 @@ void eraseEnemy3Fire();
 void printEnemy3Fire();
 int e3FireX = 0, e3FireY = 0;
 bool e3Fire = false, collision3 = false;
+// Error Handling
+bool inBoard(char);
 
 const int playerHeight = 5;
 const int playerWidth = 9;
@@ -190,6 +192,10 @@ int main()
 
         if (pFire)
         {
+            if (!inBoard('|')) // Handling the error, When bullet disapper and cannot be fired again
+            {
+                playerFire();
+            }
             movePlayerFire();
         }
         if (collision1)
@@ -219,31 +225,48 @@ int main()
             e1Fire = true;
         }
         if (e1Fire)
+        {
+            if (!inBoard('!')) // Handling the error, When bullet disapper and cannot be fired again
+            {
+                enemy1Fire();
+            }
             moveEnemy1Fire();
+        }
         if (!e2Fire)
         {
             enemy2Fire();
             e2Fire = true;
         }
         if (e2Fire)
+        {
+            if (!inBoard('I')) // Handling the error, When bullet disapper and cannot be fired again
+            {
+                enemy2Fire();
+            }
             moveEnemy2Fire();
+        }
         if (!e3Fire)
         {
             enemy3Fire();
             e3Fire = true;
         }
         if (e3Fire)
-            moveEnemy3Fire();
-        if (pcollision)
         {
-            erasePlayer();
-            if (pHealth != 0)
-                pHealth--;
-            pcollision = false;
+            if (!inBoard('[')) // Handling the error, When bullet disapper and cannot be fired again
+            {
+                enemy3Fire();
+            }
+            moveEnemy3Fire();
+            if (pcollision)
+            {
+                erasePlayer();
+                if (pHealth != 0)
+                    pHealth--;
+                pcollision = false;
+            }
+            Sleep(50);
         }
-        Sleep(50);
     }
-
     return 1;
 }
 void gotoxy(int x, int y)
@@ -880,6 +903,19 @@ void printEnemy3Fire()
             gotoxy(e3FireY, i);
             cout << board[i][e3FireY];
             break;
+        }
+    }
+}
+bool inBoard(char c)
+{
+    for (int i = 0; i < boardHeight; i++)
+    {
+        for (int j = 0; j < boardWidth; j++)
+        {
+            if (board[i][j] == c)
+            {
+                return true;
+            }
         }
     }
 }
