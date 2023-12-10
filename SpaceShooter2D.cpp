@@ -7,48 +7,68 @@ void drawBoard();
 // Player
 void erasePlayer();
 void printPlayer();
-void movePlayer(char board[][80], char direction);
+void movePlayer(char board[][90], char direction);
 int pX = 20, pY = 20;
 // Enemies 
-void moveEnemy(char board[][80], char direction,char enemyType);
-// Enemy X
+// Enemy 1
 void eraseEnemy1();
 void printEnemy1();
+void moveEnemy1(char board[][90], char direction);
 int e1X = 2, e1Y = 2;
+// Enemy 2
+void eraseEnemy2();
+void printEnemy2();
+void moveEnemy2(char board[][90], char direction);
+int e2X = 2, e2Y = 2;
+// Enemy 3
+void eraseEnemy3();
+void printEnemy3();
+void moveEnemy3(char board[][90], char direction);
+int e3X = 2, e3Y = 2;
 
 const int playerHeight = 5;
 const int playerWidth = 9;
 const int enemyHeight = 5;
 const int enemyWidth = 9;
-const int boardHeight = 26, boardWidth = 80;
+const int boardHeight = 36, boardWidth = 90;
 
 char board[boardHeight][boardWidth] = {
-    "###############################################################################",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#        X                                                                    #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                p                                                            #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "#                                                                             #",
-    "###############################################################################"};
+    "#########################################################################################",
+    "#                                     #                                                 #",
+    "#                                     #                                                 #",
+    "#                                     #                                                 #",
+    "#                                     #                                                 #",
+    "#        X                            #                 Z                               #",
+    "#                                     #                                                 #",
+    "#                                     #                                                 #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                            Y                                          #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                p                                                                      #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#                                                                                       #",
+    "#########################################################################################"};
 
 char player2D[playerHeight][playerWidth] = {
     "   /\\   ",
@@ -56,18 +76,32 @@ char player2D[playerHeight][playerWidth] = {
     " / P  \\ ",
     "-------",
     "  ||||  "};
-char enemyX[enemyHeight][enemyWidth] = {
+char enemy1[enemyHeight][enemyWidth] = {
     "  ||||  ",
     "-------",
     " \\ X  / ",
     "  \\  /  ",
     "   \\/   "};
-
+char enemy2[enemyHeight][enemyWidth] = {
+    "  ||||  ",
+    "-------",
+    " \\ Y  / ",
+    "  \\  /  ",
+    "   \\/   "};
+char enemy3[enemyHeight][enemyWidth] = {
+    "  ||||  ",
+    "-------",
+    " \\ Z  / ",
+    "  \\  /  ",
+    "   \\/   "};
 int main()
 {
     system("cls");
     drawBoard();
     printPlayer();
+    printEnemy1();
+    printEnemy2();
+    printEnemy3();
 
     while (true)
     {
@@ -110,6 +144,18 @@ void drawBoard()
                 e1Y = j;
                 printEnemy1();
             }
+            else if (board[i][j] == 'Y')
+            {
+                e2X = i;
+                e2Y = j;
+                printEnemy2();
+            }
+            else if (board[i][j] == 'Z')
+            {
+                e3X = i;
+                e3Y = j;
+                printEnemy3();
+            }
             else
             {
                 gotoxy(j, i);
@@ -141,7 +187,7 @@ void printPlayer()
         }
     }
 }
-void movePlayer(char board[][80], char direction)
+void movePlayer(char board[][90], char direction)
 {
     erasePlayer();
     board[pX][pY] = ' ';
@@ -149,7 +195,7 @@ void movePlayer(char board[][80], char direction)
     {
         pY = pY - 1;
     }
-    else if (direction == 'r' && board[pX][pY + 12] != '#') // Boards right end
+    else if (direction == 'r' && board[pX][pY + 10] != '#') // Boards right end
     {
         pY = pY + 1;
     }
@@ -164,7 +210,7 @@ void printEnemy1()
         for (int j = 0; j < enemyWidth; j++)
         {
             gotoxy(e1Y + j, e1X + i);
-            cout << enemyX[i][j];
+            cout << enemy1[i][j];
         }
     }
 }
@@ -179,7 +225,7 @@ void eraseEnemy1()
         }
     }
 }
-void moveEnemy(char board[][80], char direction, char enemyType)
+void moveEnemy1(char board[][90], char direction)
 {
     eraseEnemy1();
     board[e1X][e1Y] = ' ';
@@ -187,10 +233,85 @@ void moveEnemy(char board[][80], char direction, char enemyType)
     {
         e1Y = e1Y - 1;
     }
-    else if (direction == 'r' && board[e1X][e1Y - 1] != '#') // Boards right end
+    else if (direction == 'r' && board[e1X][e1Y + 10] != '#') // Boards right end
     {
         e1Y = e1Y + 1;
     }
-    board[e1X][e1Y] = enemyType;
+    board[e1X][e1Y] = 'X';
     printEnemy1();
+}
+
+void printEnemy2()
+{
+    for (int i = 0; i < enemyHeight; i++)
+    {
+        for (int j = 0; j < enemyWidth; j++)
+        {
+            gotoxy(e2Y + j, e2X + i);
+            cout << enemy2[i][j];
+        }
+    }
+}
+void eraseEnemy2()
+{
+    for (int i = 0; i < enemyHeight; i++)
+    {
+        for (int j = 0; j < enemyWidth; j++)
+        {
+            gotoxy(e2Y + j, e2X + i);
+            cout << " ";
+        }
+    }
+}
+void moveEnemy2(char board[][90], char direction)
+{
+    eraseEnemy2();
+    board[e2X][e2Y] = ' ';
+    if (direction == 'l' && board[e2X][e2Y - 1] != '#') // Boards left end
+    {
+        e2Y = e2Y - 1;
+    }
+    else if (direction == 'r' && board[e2X][e2Y + 10] != '#') // Boards right end
+    {
+        e2Y = e2Y + 1;
+    }
+    board[e2X][e2Y] = 'Y';
+    printEnemy2();
+}
+void printEnemy3()
+{
+    for (int i = 0; i < enemyHeight; i++)
+    {
+        for (int j = 0; j < enemyWidth; j++)
+        {
+            gotoxy(e3Y + j, e3X + i);
+            cout << enemy3[i][j];
+        }
+    }
+}
+void eraseEnemy3()
+{
+    for (int i = 0; i < enemyHeight; i++)
+    {
+        for (int j = 0; j < enemyWidth; j++)
+        {
+            gotoxy(e3Y + j, e3X + i);
+            cout << " ";
+        }
+    }
+}
+void moveEnemy3(char board[][90], char direction)
+{
+    eraseEnemy3();
+    board[e3X][e3Y] = ' ';
+    if (direction == 'l' && board[e3X][e3Y - 1] != '#') // Boards left end
+    {
+        e3Y = e3Y - 1;
+    }
+    else if (direction == 'r' && board[e3X][e3Y + 10] != '#') // Boards right end
+    {
+        e3Y = e3Y + 1;
+    }
+    board[e3X][e3Y] = 'Z';
+    printEnemy3();
 }
