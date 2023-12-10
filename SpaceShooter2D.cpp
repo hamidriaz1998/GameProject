@@ -8,26 +8,31 @@ void drawBoard();
 void erasePlayer();
 void printPlayer();
 void movePlayer(char board[][90], char direction);
-int pX = 20, pY = 20, pHealth = 5;
+void playerFire(char board[][90]);
+int pX = 0, pY = 0, pHealth = 5;
+bool pFire = false;
 // Enemies
 // Enemy 1
 void eraseEnemy1();
 void printEnemy1();
 void changeDirectionEnemy1(char &direction);
 void moveEnemy1(char board[][90], char direction);
-int e1X = 2, e1Y = 2, e1Health = 5;
+int e1X = 0, e1Y = 0, e1Health = 5;
+bool e1Fire = false;
 // Enemy 2
 void eraseEnemy2();
 void printEnemy2();
 void changeDirectionEnemy2(char &direction);
 void moveEnemy2(char board[][90], char direction);
-int e2X = 2, e2Y = 2, e2Health = 5;
+int e2X = 0, e2Y = 0, e2Health = 5;
+bool e2Fire = false;
 // Enemy 3
 void eraseEnemy3();
 void printEnemy3();
 void changeDirectionEnemy3(char &direction);
 void moveEnemy3(char board[][90], char direction);
-int e3X = 2, e3Y = 2, e3Health = 5;
+int e3X = 0, e3Y = 0, e3Health = 5;
+bool e3Fire = false;
 
 const int playerHeight = 5;
 const int playerWidth = 9;
@@ -127,12 +132,29 @@ int main()
             // moveEnemy2(board, 'r');
             // moveEnemy3(board, 'r');
         }
-        changeDirectionEnemy1(dir1);
-        moveEnemy1(board, dir1);
-        changeDirectionEnemy2(dir2);
-        moveEnemy2(board, dir2);
-        changeDirectionEnemy3(dir3);
-        moveEnemy3(board, dir3);
+        else if (GetAsyncKeyState(VK_SPACE))
+        {
+            if (!pFire)
+            {
+                playerFire(board);
+                pFire = true;
+            }
+        }
+        if (e1Health != 0)
+        {
+            changeDirectionEnemy1(dir1);
+            moveEnemy1(board, dir1);
+        }
+        if (e2Health != 0)
+        {
+            changeDirectionEnemy2(dir2);
+            moveEnemy2(board, dir2);
+        }
+        if (e3Health != 0)
+        {
+            changeDirectionEnemy3(dir3);
+            moveEnemy3(board, dir3);
+        }
 
         Sleep(100);
     }
@@ -222,7 +244,41 @@ void movePlayer(char board[][90], char direction)
     board[pX][pY] = 'p';
     printPlayer();
 }
-
+void playerFire(char board[][90])
+{
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 21; j++)
+        {
+            if (board[i][j] == 'p')
+            {
+                board[i-1][j] = '|';
+            }
+        }
+    }
+}
+void moveFire(char board[][90]) { // the idea for collsion detection is to create a function that checks if in surrounding cells there is an enemy character
+    for (int i = 1; i < 10; i++) {
+        for (int j = 0; j < 21; j++) {
+            if (board[i][j] == '|') {
+                if (board[i-1][j] != '#') { // If the cell above is not a wall
+                    if (board[i-1][j] == 'e') { // If the cell above is an enemy
+                        // Remove the enemy and the fire
+                        board[i][j] = ' ';
+                        board[i-1][j] = ' ';
+                    } else {
+                        // Move the fire up
+                        board[i][j] = ' ';
+                        board[i-1][j] = '|';
+                    }
+                } else {
+                    // Remove the fire if it hits a wall
+                    board[i][j] = ' ';
+                }
+            }
+        }
+    }
+}
 void printEnemy1()
 {
     for (int i = 0; i < enemyHeight; i++)
