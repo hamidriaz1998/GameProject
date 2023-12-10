@@ -9,15 +9,19 @@ void erasePlayer();
 void printPlayer();
 void movePlayer(char direction);
 void createPlayerHitbox();
-int pX = 0, pY = 0, pHealth = 5;
+void erasePlayerHitbox();
+const int pX = 30;
+int pY = 0, pHealth = 5;
 // Player Fire
 void playerFire();
 void movePlayerFire();
 void erasePlayerFire();
 void printPlayerFire();
+int pFireX = 0, pFireY = 0;
 bool pFire = false, pcollision = false;
 // Enemies
 void createEnemyHitbox();
+void eraseEnemyHitbox();
 // Enemy 1
 void eraseEnemy1();
 void printEnemy1();
@@ -119,8 +123,6 @@ int main()
     printEnemy1();
     printEnemy2();
     printEnemy3();
-    createPlayerHitbox();
-    createEnemyHitbox();
 
     while (true)
     {
@@ -140,7 +142,6 @@ int main()
                 pFire = true;
             }
         }
-        createPlayerHitbox();
         if (e1Health != 0)
         {
             changeDirectionEnemy1(dir1);
@@ -156,6 +157,7 @@ int main()
             changeDirectionEnemy3(dir3);
             moveEnemy3(dir3);
         }
+        eraseEnemyHitbox();
         createEnemyHitbox();
 
         if (pFire)
@@ -200,7 +202,6 @@ void drawBoard()
         {
             if (board[i][j] == 'p')
             {
-                pX = i;
                 pY = j;
                 printPlayer();
             }
@@ -256,6 +257,7 @@ void printPlayer()
 void movePlayer(char direction)
 {
     erasePlayer();
+    erasePlayerHitbox();
     board[pX][pY] = ' ';
     if (direction == 'l' && board[pX][pY - 1] != '#') // Boards left end
     {
@@ -267,6 +269,7 @@ void movePlayer(char direction)
     }
     board[pX][pY] = 'p';
     printPlayer();
+    createPlayerHitbox();
 }
 void createPlayerHitbox()
 {
@@ -275,26 +278,26 @@ void createPlayerHitbox()
         board[pX][pY + i] = '.';
     }
 }
+void erasePlayerHitbox()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        board[pX][pY + i] = ' ';
+    }
+}
 void playerFire()
 {
-    for (int i = 0; i < 10; i++)
-    {
-        for (int j = 0; j < 21; j++)
-        {
-            if (board[i][j] == 'p')
-            {
-                board[i - 1][j] = '|';
-            }
-        }
-    }
+    pFireX = pX - 1;
+    pFireY = pY;
+    board[pFireX][pFireY] = '|';
 }
 void movePlayerFire()
 {
     bool foundFire = false;
-    erasePlayerFire(); 
-    for (int i = 1; i < 10; i++)
+    erasePlayerFire();
+    for (int i = 1; i < boardHeight; i++)
     {
-        for (int j = 0; j < 21; j++)
+        for (int j = 0; j < boardWidth; j++)
         {
             if (board[i][j] == '|')
             {
@@ -306,18 +309,21 @@ void movePlayerFire()
                         collision1 = true;
                         board[i][j] = ' ';
                         board[i - 1][j] = ' ';
+                        pFire = false;
                     }
                     else if (board[i - 1][j] == 'Y' || board[i - 1][j] == ';')
                     { // Enemy 2
                         collision2 = true;
                         board[i][j] = ' ';
                         board[i - 1][j] = ' ';
+                        pFire = false;
                     }
                     else if (board[i - 1][j] == 'Z' || board[i - 1][j] == '~')
                     { // Enemy 3
                         collision3 = true;
                         board[i][j] = ' ';
                         board[i - 1][j] = ' ';
+                        pFire = false;
                     }
                     else
                     {
@@ -330,6 +336,7 @@ void movePlayerFire()
                 {
                     // Remove the fire if it hits a wall
                     board[i][j] = ' ';
+                    pFire = false;
                 }
                 break;
             }
@@ -343,9 +350,9 @@ void movePlayerFire()
 }
 void erasePlayerFire()
 {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < boardHeight; i++)
     {
-        for (int j = 0; j < 21; j++)
+        for (int j = 0; j < boardWidth; j++)
         {
             if (board[i][j] == '|')
             {
@@ -358,9 +365,9 @@ void erasePlayerFire()
 }
 void printPlayerFire()
 {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < boardHeight; i++)
     {
-        for (int j = 0; j < 21; j++)
+        for (int j = 0; j < boardWidth; j++)
         {
             if (board[i][j] == '|')
             {
@@ -378,6 +385,15 @@ void createEnemyHitbox()
         board[e1X + 4][e1Y + i] = ',';
         board[e2X + 4][e2Y + i] = ';';
         board[e3X + 4][e3Y + i] = '~';
+    }
+}
+void eraseEnemyHitbox()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        board[e1X + 4][e1Y + i] = ' ';
+        board[e2X + 4][e2Y + i] = ' ';
+        board[e3X + 4][e3Y + i] = ' ';
     }
 }
 void printEnemy1()
