@@ -322,14 +322,30 @@ void createPlayerHitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[pX][pY + i] = '.';
+        if (i < 6)
+        {
+            board[pX][pY + i] = '.';
+        }
+        if (i < 4)
+        {
+            board[pX + i][pY] = '.';
+            board[pX + i][pY + 5] = '.';
+        }
     }
 }
 void erasePlayerHitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[pX][pY + i] = ' ';
+        if (i < 6)
+        {
+            board[pX][pY + i] = ' ';
+        }
+        if (i < 4)
+        {
+            board[pX + i][pY] = ' ';
+            board[pX + i][pY + 5] = ' ';
+        }
     }
 }
 void playerFire()
