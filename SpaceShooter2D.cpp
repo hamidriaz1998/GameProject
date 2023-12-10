@@ -1,5 +1,5 @@
 #include <iostream>
-#include <windows.h>
+#include <windows.h> // If enemy hits the bullet from the side it the bullet cannot be fired again, Probably should add hitboxes at sides too. and also look for then on sides in conditions.
 using namespace std;
 void gotoxy(int x, int y);
 // Board
@@ -161,12 +161,12 @@ int main()
             changeDirectionEnemy3(dir3);
             moveEnemy3(dir3);
         }
-        gotoxy(100,0);
-        cout<<"Enemy 1 Health: "<<e1Health<<"   ";
-        gotoxy(100,1);
-        cout<<"Enemy 2 Health: "<<e2Health<<"   ";
-        gotoxy(100,2);
-        cout<<"Enemy 3 Health: "<<e3Health<<"   ";
+        gotoxy(100, 0);
+        cout << "Enemy 1 Health: " << e1Health << "   ";
+        gotoxy(100, 1);
+        cout << "Enemy 2 Health: " << e2Health << "   ";
+        gotoxy(100, 2);
+        cout << "Enemy 3 Health: " << e3Health << "   ";
 
         if (pFire)
         {
@@ -390,14 +390,30 @@ void createEnemy1Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[e1X + 4][e1Y + i] = ',';
+        if (i < 4)
+        {
+            board[e1X + i][e1Y] = ',';
+            board[e1X + i][e1Y + 5] = ',';
+        }
+        if (i < 6)
+        {
+            board[e1X + 4][e1Y + i] = ',';
+        }
     }
 }
 void eraseEnemy1Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[e1X + 4][e1Y + i] = ' ';
+        if (i < 4)
+        {
+            board[e1X + i][e1Y] = ' ';
+            board[e1X + i][e1Y + 5] = ' ';
+        }
+        if (i < 6)
+        {
+            board[e1X + 4][e1Y + i] = ' ';
+        }
     }
 }
 void printEnemy1()
@@ -454,14 +470,30 @@ void createEnemy2Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[e2X + 4][e2Y + i] = ';';
+        if (i < 4)
+        {
+            board[e2X + i][e2Y] = ';';
+            board[e2X + i][e2Y + 5] = ';';
+        }
+        if (i < 6)
+        {
+            board[e2X + 4][e2Y + i] = ';';
+        }
     }
 }
 void eraseEnemy2Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[e2X + 4][e2Y + i] = ' ';
+        if (i < 4)
+        {
+            board[e2X + i][e2Y] = ' ';
+            board[e2X + i][e2Y + 5] = ' ';
+        }
+        if (i < 6)
+        {
+            board[e2X + 4][e2Y + i] = ' ';
+        }
     }
 }
 void printEnemy2()
@@ -518,14 +550,30 @@ void createEnemy3Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[e3X + 4][e3Y + i] = '~';
+        if (i < 4)
+        {
+            board[e3X + i][e3Y] = '~';
+            board[e3X + i][e3Y + 5] = '~';
+        }
+        if (i < 6)
+        {
+            board[e3X + 4][e3Y + i] = '~';
+        }
     }
 }
 void eraseEnemy3Hitbox()
 {
     for (int i = 0; i < 6; i++)
     {
-        board[e3X + 4][e3Y + i] = ' ';
+        if (i < 4)
+        {
+            board[e3X + i][e3Y] = ' ';
+            board[e3X + i][e3Y + 5] = ' ';
+        }
+        if (i < 6)
+        {
+            board[e3X + 4][e3Y + i] = ' ';
+        }
     }
 }
 void printEnemy3()
