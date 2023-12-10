@@ -219,9 +219,21 @@ int main()
             e1Fire = true;
         }
         if (e1Fire)
-        {
             moveEnemy1Fire();
+        if (!e2Fire)
+        {
+            enemy2Fire();
+            e2Fire = true;
         }
+        if (e2Fire)
+            moveEnemy2Fire();
+        if (!e3Fire)
+        {
+            enemy3Fire();
+            e3Fire = true;
+        }
+        if (e3Fire)
+            moveEnemy3Fire();
         if (pcollision)
         {
             erasePlayer();
@@ -657,6 +669,72 @@ void moveEnemy2(char direction)
     createEnemy2Hitbox();
 }
 // Enemy 2 Fire
+void enemy2Fire()
+{
+    e2FireX = e2X + 4;
+    e2FireY = e2Y;
+    board[e2FireX][e2FireY] = 'I';
+}
+void moveEnemy2Fire()
+{
+    bool foundFire = false;
+    eraseEnemy2Fire();
+    for (int i = 1; i <= boardHeight; i++)
+    {
+        if (board[i][e2FireY] == 'I')
+        {
+            foundFire = true;
+            if (board[i + 1][e2FireY] != '#')
+            {
+                if (board[i + 1][e2FireY] == 'p' || board[i + 1][e2FireY] == '.' || board[i][e2FireY + 1] == '.' || board[i][e2FireY - 1] == '.' || board[i][e2FireY + 1] == 'p' || board[i][e2FireY - 1] == 'p')
+                {
+                    pcollision = true;
+                    board[i][e2FireY] = ' ';
+                    board[i + 1][e2FireY] = ' ';
+                    e2Fire = false;
+                }
+                else
+                {
+                    // Move the fire up
+                    board[i][e2FireY] = ' ';
+                    board[i + 1][e2FireY] = 'I';
+                }
+            }
+            else
+            {
+                // Remove the fire if it hits a wall
+                board[i][e2FireY] = ' ';
+                e2Fire = false;
+            }
+            break;
+        }
+    }
+    printEnemy2Fire();
+}
+void eraseEnemy2Fire()
+{
+    for (int i = 0; i < boardHeight; i++)
+    {
+        if (board[i][e2FireY] == 'I')
+        {
+            gotoxy(e2FireY, i);
+            cout << " ";
+            break;
+        }
+    }
+}
+void printEnemy2Fire()
+{
+    for (int i = 0; i < boardHeight; i++)
+    {
+        if (board[i][e2FireY] == 'I')
+        {
+            gotoxy(e2FireY, i);
+            cout << board[i][e2FireY];
+            break;
+        }
+    }
+}
 // Enemy 3 Functions/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void createEnemy3Hitbox()
 {
@@ -739,3 +817,69 @@ void moveEnemy3(char direction)
     createEnemy3Hitbox();
 }
 // Enemy 3 Fire
+void enemy3Fire()
+{
+    e3FireX = e3X + 4;
+    e3FireY = e3Y;
+    board[e3FireX][e3FireY] = '[';
+}
+void moveEnemy3Fire()
+{
+    bool foundFire = false;
+    eraseEnemy3Fire();
+    for (int i = 1; i <= boardHeight; i++)
+    {
+        if (board[i][e3FireY] == '[')
+        {
+            foundFire = true;
+            if (board[i + 1][e3FireY] != '#')
+            {
+                if (board[i + 1][e3FireY] == 'p' || board[i + 1][e3FireY] == '.' || board[i][e3FireY + 1] == '.' || board[i][e3FireY - 1] == '.' || board[i][e3FireY + 1] == 'p' || board[i][e3FireY - 1] == 'p')
+                {
+                    pcollision = true;
+                    board[i][e3FireY] = ' ';
+                    board[i + 1][e3FireY] = ' ';
+                    e3Fire = false;
+                }
+                else
+                {
+                    // Move the fire up
+                    board[i][e3FireY] = ' ';
+                    board[i + 1][e3FireY] = '[';
+                }
+            }
+            else
+            {
+                // Remove the fire if it hits a wall
+                board[i][e3FireY] = ' ';
+                e3Fire = false;
+            }
+            break;
+        }
+    }
+    printEnemy3Fire();
+}
+void eraseEnemy3Fire()
+{
+    for (int i = 0; i < boardHeight; i++)
+    {
+        if (board[i][e3FireY] == '[')
+        {
+            gotoxy(e3FireY, i);
+            cout << " ";
+            break;
+        }
+    }
+}
+void printEnemy3Fire()
+{
+    for (int i = 0; i < boardHeight; i++)
+    {
+        if (board[i][e3FireY] == '[')
+        {
+            gotoxy(e3FireY, i);
+            cout << board[i][e3FireY];
+            break;
+        }
+    }
+}
