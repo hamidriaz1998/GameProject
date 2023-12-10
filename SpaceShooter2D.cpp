@@ -9,20 +9,23 @@ void erasePlayer();
 void printPlayer();
 void movePlayer(char board[][90], char direction);
 int pX = 20, pY = 20, pHealth = 5;
-// Enemies 
+// Enemies
 // Enemy 1
 void eraseEnemy1();
 void printEnemy1();
+void changeDirectionEnemy1(char &direction);
 void moveEnemy1(char board[][90], char direction);
 int e1X = 2, e1Y = 2, e1Health = 5;
 // Enemy 2
 void eraseEnemy2();
 void printEnemy2();
+void changeDirectionEnemy2(char &direction);
 void moveEnemy2(char board[][90], char direction);
 int e2X = 2, e2Y = 2, e2Health = 5;
 // Enemy 3
 void eraseEnemy3();
 void printEnemy3();
+void changeDirectionEnemy3(char &direction);
 void moveEnemy3(char board[][90], char direction);
 int e3X = 2, e3Y = 2, e3Health = 5;
 
@@ -96,6 +99,9 @@ char enemy3[enemyHeight][enemyWidth] = {
     "   \\/   "};
 int main()
 {
+    char dir1 = 'r';
+    char dir2 = 'r';
+    char dir3 = 'r';
     system("cls");
     drawBoard();
     printPlayer();
@@ -121,6 +127,12 @@ int main()
             // moveEnemy2(board, 'r');
             // moveEnemy3(board, 'r');
         }
+        changeDirectionEnemy1(dir1);
+        moveEnemy1(board, dir1);
+        changeDirectionEnemy2(dir2);
+        moveEnemy2(board, dir2);
+        changeDirectionEnemy3(dir3);
+        moveEnemy3(board, dir3);
 
         Sleep(100);
     }
@@ -233,15 +245,26 @@ void eraseEnemy1()
         }
     }
 }
+void changeDirectionEnemy1(char &direction)
+{
+    if (direction == 'l' && board[e1X][e1Y - 1] == '#')
+    {
+        direction = 'r';
+    }
+    else if (direction == 'r' && board[e1X][e1Y + 9] == '#')
+    {
+        direction = 'l';
+    }
+}
 void moveEnemy1(char board[][90], char direction)
 {
     eraseEnemy1();
     board[e1X][e1Y] = ' ';
-    if (direction == 'l' && board[e1X][e1Y - 1] != '#') // Boards left end
+    if (direction == 'l')
     {
         e1Y = e1Y - 1;
     }
-    else if (direction == 'r' && board[e1X][e1Y + 9] != '#') // Boards right end
+    else if (direction == 'r')
     {
         e1Y = e1Y + 1;
     }
@@ -271,15 +294,26 @@ void eraseEnemy2()
         }
     }
 }
+void changeDirectionEnemy2(char &direction)
+{
+    if (direction == 'l' && board[e2X][e2Y - 1] == '#')
+    {
+        direction = 'r';
+    }
+    else if (direction == 'r' && board[e2X][e2Y + 9] == '#')
+    {
+        direction = 'l';
+    }
+}
 void moveEnemy2(char board[][90], char direction)
 {
     eraseEnemy2();
     board[e2X][e2Y] = ' ';
-    if (direction == 'l' && board[e2X][e2Y - 1] != '#') // Boards left end
+    if (direction == 'l')
     {
         e2Y = e2Y - 1;
     }
-    else if (direction == 'r' && board[e2X][e2Y + 9] != '#') // Boards right end
+    else if (direction == 'r')
     {
         e2Y = e2Y + 1;
     }
@@ -308,15 +342,26 @@ void eraseEnemy3()
         }
     }
 }
+void changeDirectionEnemy3(char &direction)
+{
+    if (direction == 'l' && board[e3X][e3Y - 1] == '#')
+    {
+        direction = 'r';
+    }
+    else if (direction == 'r' && board[e3X][e3Y + 9] == '#')
+    {
+        direction = 'l';
+    }
+}
 void moveEnemy3(char board[][90], char direction)
 {
     eraseEnemy3();
     board[e3X][e3Y] = ' ';
-    if (direction == 'l' && board[e3X][e3Y - 1] != '#') // Boards left end
+    if (direction == 'l')
     {
         e3Y = e3Y - 1;
     }
-    else if (direction == 'r' && board[e3X][e3Y + 9] != '#') // Boards right end
+    else if (direction == 'r')
     {
         e3Y = e3Y + 1;
     }
