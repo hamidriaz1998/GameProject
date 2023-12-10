@@ -108,10 +108,18 @@ int main()
         if (GetAsyncKeyState(VK_LEFT))
         {
             movePlayer(board, 'l');
+            // Testing
+            // moveEnemy1(board, 'l');
+            // moveEnemy2(board, 'l');
+            // moveEnemy3(board, 'l');
         }
         else if (GetAsyncKeyState(VK_RIGHT))
         {
             movePlayer(board, 'r');
+            // Testing
+            // moveEnemy1(board, 'r');
+            // moveEnemy2(board, 'r');
+            // moveEnemy3(board, 'r');
         }
 
         Sleep(100);
@@ -233,7 +241,7 @@ void moveEnemy1(char board[][90], char direction)
     {
         e1Y = e1Y - 1;
     }
-    else if (direction == 'r' && board[e1X][e1Y + 10] != '#') // Boards right end
+    else if (direction == 'r' && board[e1X][e1Y + 9] != '#') // Boards right end
     {
         e1Y = e1Y + 1;
     }
@@ -271,7 +279,7 @@ void moveEnemy2(char board[][90], char direction)
     {
         e2Y = e2Y - 1;
     }
-    else if (direction == 'r' && board[e2X][e2Y + 10] != '#') // Boards right end
+    else if (direction == 'r' && board[e2X][e2Y + 9] != '#') // Boards right end
     {
         e2Y = e2Y + 1;
     }
@@ -308,7 +316,7 @@ void moveEnemy3(char board[][90], char direction)
     {
         e3Y = e3Y - 1;
     }
-    else if (direction == 'r' && board[e3X][e3Y + 10] != '#') // Boards right end
+    else if (direction == 'r' && board[e3X][e3Y + 9] != '#') // Boards right end
     {
         e3Y = e3Y + 1;
     }
