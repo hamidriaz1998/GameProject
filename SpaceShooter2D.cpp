@@ -280,7 +280,7 @@ int main()
                 pcollision = false;
             }
         }
-        if (score % 30 == 0 && score != 0)
+        if (score % 50 == 0 && score != 0)
         {
             if (!coin)
             {
@@ -288,17 +288,17 @@ int main()
                 coin = true;
             }
         }
+        if (coinCollision)
+        {
+            score += 20;
+            pHealth++;
+            eraseCoin();
+            coinCollision = false;
+        }
         if (coin) // To prevent coin from disapperaing
         {
             placeCoinInBoard();
             printCoin();
-        }
-        if (coinCollision)
-        {
-            score += 30;
-            pHealth++;
-            eraseCoin();
-            coinCollision = false;
         }
         if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
         {
@@ -380,7 +380,7 @@ void generateCoin()
     while (true)
     {
         coinX = rand() % boardHeight - 10; // To prevent coin from appearing on or below the player
-        coinY = rand() % 90;
+        coinY = (rand() % boardWidth - 10) + 3; // To prevent coin from appearing with walls
         if (isPositionEmpty(coinX, coinY))
         {
             break;
