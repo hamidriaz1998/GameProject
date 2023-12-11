@@ -9,6 +9,8 @@ void printBanner();
 void printMenu();
 int getScreenWidth();
 void printInstructions();
+void printScoreBoard();
+void printScore();
 int X = 0, Y = 0;
 // Input validation
 int getNum(string);
@@ -90,10 +92,10 @@ int score = 0;
 // Error Handling
 bool inBoard(char);
 // File Handling
-int highScore[5],highScoreIndex = 0;
+int highScore[5], highScoreIndex = 0;
 void storeHighScore(string, int);
 string readField(string, int);
-void loadBoard(string);      // Needs to be fixed
+void loadBoard(string); // Needs to be fixed
 void saveBoard(string);
 // Saving game state    (saveBoard will also be used here)
 bool savedGame = false;
@@ -169,8 +171,8 @@ char enemy3[enemyHeight][enemyWidth] = {
     "   \\/   "};
 int main()
 {
-    // Starting Page
-    mainMenu:
+// Starting Page
+mainMenu:
     printBanner();
     printMenu();
     int choice = getNum("Enter your choice: ");
@@ -191,6 +193,7 @@ int main()
         char dir3 = 'r';
         system("cls");
         drawBoard();
+        printScoreBoard();
         printPlayer();
         printEnemy1();
         printEnemy2();
@@ -230,16 +233,6 @@ int main()
                 changeDirectionEnemy3(dir3);
                 moveEnemy3(dir3);
             }
-            gotoxy(100, 0);
-            cout << "Enemy 1 Health: " << e1Health << "   ";
-            gotoxy(100, 1);
-            cout << "Enemy 2 Health: " << e2Health << "   ";
-            gotoxy(100, 2);
-            cout << "Enemy 3 Health: " << e3Health << "   ";
-            gotoxy(100, 3);
-            cout << "Player Health: " << pHealth << "   ";
-            gotoxy(100, 4);
-            cout << "Score: " << score << "   ";
 
             if (pFire)
             {
@@ -345,22 +338,28 @@ int main()
                 break;
             }
             counter++;
+            printScore();
             Sleep(50);
         }
         system("cls");
         gotoxy(0, 0);
         if (pHealth == 0)
         {
+            printBanner();
             cout << "Game Over" << endl;
             cout << "Your Score is " << score;
+            cout << "Press any key to return to the main menu....................";
+            getch();
+            goto mainMenu;
         }
         else
         {
             printBanner();
             cout << "You Win" << endl;
-            cout << "Your Score is " << score<<endl;
+            cout << "Your Score is " << score << endl;
             cout << "Press any key to return to the main menu....................";
             getch();
+            goto mainMenu;
         }
         return 0;
     }
@@ -427,6 +426,40 @@ void printInstructions()
     gotoxy(X, Y++);
     cout << "  Press any key to go back to the main menu." << endl;
     getch();
+}
+void printScoreBoard()
+{
+    gotoxy(100, 0);
+    cout << "##################################";
+    gotoxy(100, 1);
+    cout << "#                                #";
+    gotoxy(100, 2);
+    cout << "#                                #";
+    gotoxy(100, 3);
+    cout << "#                                #";
+    gotoxy(100, 4);
+    cout << "#                                #";
+    gotoxy(100, 5);
+    cout << "#                                #";
+    gotoxy(100, 6);
+    cout << "#                                #";
+    gotoxy(100, 7);
+    cout << "#                                #";
+    gotoxy(100, 8);
+    cout << "##################################";
+}
+void printScore()
+{
+    gotoxy(109, 2);
+    cout << "Enemy 1 Health: " << e1Health << "   ";
+    gotoxy(109, 3);
+    cout << "Enemy 2 Health: " << e2Health << "   ";
+    gotoxy(109, 4);
+    cout << "Enemy 3 Health: " << e3Health << "   ";
+    gotoxy(109, 5);
+    cout << "Player Health: " << pHealth << "   ";
+    gotoxy(109, 6);
+    cout << "Score: " << score << "   ";
 }
 int getScreenWidth()
 {
@@ -1230,4 +1263,3 @@ string readField(string line, int field)
 //     }
 //     file.close();
 // }
-
