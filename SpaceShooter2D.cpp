@@ -157,8 +157,10 @@ int main()
     printEnemy1();
     printEnemy2();
     printEnemy3();
+    int counter = 0;
     while (true)
     {
+        int enemyToMove = counter % 3;
         if (GetAsyncKeyState(VK_LEFT))
         {
             movePlayer('l');
@@ -175,17 +177,17 @@ int main()
                 pFire = true;
             }
         }
-        if (!(e1Health <= 0))
+        if (!(e1Health <= 0) && enemyToMove == 0)
         {
             changeDirectionEnemy1(dir1);
             moveEnemy1(dir1);
         }
-        if (!(e2Health <= 0))
+        if (!(e2Health <= 0) && enemyToMove == 1)
         {
             changeDirectionEnemy2(dir2);
             moveEnemy2(dir2);
         }
-        if (!(e3Health <= 0))
+        if (!(e3Health <= 0) && enemyToMove == 2)
         {
             changeDirectionEnemy3(dir3);
             moveEnemy3(dir3);
@@ -233,7 +235,7 @@ int main()
                 e3Health--;
             collision3 = false;
         }
-        if (!e1Fire && !(e1Health <= 0))
+        if (!e1Fire && !(e1Health <= 0) && enemyToMove == 0)
         {
             enemy1Fire();
             e1Fire = true;
@@ -246,7 +248,7 @@ int main()
             }
             moveEnemy1Fire();
         }
-        if (!e2Fire && !(e2Health <= 0))
+        if (!e2Fire && !(e2Health <= 0) && enemyToMove == 1)
         {
             enemy2Fire();
             e2Fire = true;
@@ -259,7 +261,7 @@ int main()
             }
             moveEnemy2Fire();
         }
-        if (!e3Fire && !(e3Health <= 0))
+        if (!e3Fire && !(e3Health <= 0) && enemyToMove == 2)
         {
             enemy3Fire();
             e3Fire = true;
@@ -304,6 +306,7 @@ int main()
         {
             break;
         }
+        counter++;
         Sleep(50);
     }
     system("cls");
