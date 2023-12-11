@@ -4,6 +4,13 @@ using namespace std;
 void gotoxy(int x, int y);
 // Board
 void drawBoard();
+// Coin
+void printCoin();
+void eraseCoin();
+void generateCoin();
+bool isPositionEmpty(int x, int y);
+bool coin = false, coinCollision = false;
+int coinX = 0, coinY = 0;
 // Player
 void erasePlayer();
 void printPlayer();
@@ -273,11 +280,26 @@ int main()
                 pcollision = false;
             }
         }
-        Sleep(50);
+        if (score % 50 == 0)
+        {
+            if (!coin)
+            {
+                generateCoin();
+                coin = true;
+            }
+        }
+        if (coinCollision)
+        {
+            score += 30;
+            pHealth++;
+            eraseCoin();
+            coinCollision = false;
+        }
         if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
         {
             break;
         }
+        Sleep(50);
     }
     system("cls");
     gotoxy(0, 0);
@@ -337,7 +359,36 @@ void drawBoard()
         }
     }
 }
-
+// Coin Functions
+void printCoin()
+{
+    gotoxy(coinY, coinX);
+    cout << "$";
+}
+void eraseCoin()
+{
+    gotoxy(coinY, coinX);
+    cout << " ";
+}
+void generateCoin()
+{
+    do
+    {
+        coinX = rand() % boardHeight;
+        coinY = rand() % boardWidth;
+    } while (!isPositionEmpty(coinX, coinY));
+    board[coinX][coinY] = '$';
+    printCoin();
+}
+bool isPositionEmpty(int x, int y)
+{
+    if (board[x][y] == ' ')
+    {
+        return true;
+    }
+    return false;
+}
+// Player Functions
 void erasePlayer()
 {
     for (int i = 0; i < playerHeight; i++)
@@ -444,6 +495,14 @@ void movePlayerFire()
                     board[i][pFireY] = ' ';
                     board[i - 1][pFireY] = ' ';
                     pFire = false;
+                }
+                else if (board[i - 1][pFireY] == '$')
+                {
+                    score += 50;
+                    board[i][pFireY] = ' ';
+                    board[i - 1][pFireY] = ' ';
+                    pFire = false;
+                    coin = false;
                 }
                 else
                 {
