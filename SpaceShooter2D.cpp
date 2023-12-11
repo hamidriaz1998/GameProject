@@ -1,7 +1,18 @@
 #include <iostream>
+#include <conio.h>
 #include <windows.h>
 using namespace std;
 void gotoxy(int x, int y);
+// Starting Page
+void printBanner();
+void printMenu();
+int getScreenWidth();
+void printInstructions();
+int X = 0, Y = 0;
+// Input validation
+int getNum(string);
+bool checkInt(string);
+int strToInt(string);
 // Board
 void drawBoard();
 // Coin
@@ -77,7 +88,7 @@ bool e3Fire = false, collision3 = false;
 bool inBoard(char);
 // Score
 int score = 0;
-
+// Board and Characters
 const int playerHeight = 5;
 const int playerWidth = 9;
 const int enemyHeight = 5;
@@ -148,180 +159,198 @@ char enemy3[enemyHeight][enemyWidth] = {
     "   \\/   "};
 int main()
 {
-    char dir1 = 'r';
-    char dir2 = 'r';
-    char dir3 = 'r';
-    system("cls");
-    drawBoard();
-    printPlayer();
-    printEnemy1();
-    printEnemy2();
-    printEnemy3();
-    int counter = 0;
-    while (true)
+    // Starting Page
+    mainMenu:
+    printBanner();
+    printMenu();
+    int choice = getNum("Enter your choice: ");
+    if (choice == 3)
+    { // Exit
+        return 0;
+    }
+    else if (choice == 2)
+    { // Instructions
+        printInstructions();
+        goto mainMenu;
+    }
+    else if (choice == 1)
     {
-        int enemyToMove = counter % 3;
-        if (GetAsyncKeyState(VK_LEFT))
+        // Play Game
+        char dir1 = 'r';
+        char dir2 = 'r';
+        char dir3 = 'r';
+        system("cls");
+        drawBoard();
+        printPlayer();
+        printEnemy1();
+        printEnemy2();
+        printEnemy3();
+        int counter = 0;
+        while (true)
         {
-            movePlayer('l');
-        }
-        else if (GetAsyncKeyState(VK_RIGHT))
-        {
-            movePlayer('r');
-        }
-        else if (GetAsyncKeyState(VK_SPACE))
-        {
-            if (!pFire)
+            int enemyToMove = counter % 3; // To move each enemy one by one to optimize the game
+            if (GetAsyncKeyState(VK_LEFT))
             {
-                playerFire();
-                pFire = true;
+                movePlayer('l');
             }
-        }
-        if (!(e1Health <= 0) && enemyToMove == 0)
-        {
-            changeDirectionEnemy1(dir1);
-            moveEnemy1(dir1);
-        }
-        if (!(e2Health <= 0) && enemyToMove == 1)
-        {
-            changeDirectionEnemy2(dir2);
-            moveEnemy2(dir2);
-        }
-        if (!(e3Health <= 0) && enemyToMove == 2)
-        {
-            changeDirectionEnemy3(dir3);
-            moveEnemy3(dir3);
-        }
-        gotoxy(100, 0);
-        cout << "Enemy 1 Health: " << e1Health << "   ";
-        gotoxy(100, 1);
-        cout << "Enemy 2 Health: " << e2Health << "   ";
-        gotoxy(100, 2);
-        cout << "Enemy 3 Health: " << e3Health << "   ";
-        gotoxy(100, 3);
-        cout << "Player Health: " << pHealth << "   ";
-        gotoxy(100, 4);
-        cout << "Score: " << score << "   ";
+            else if (GetAsyncKeyState(VK_RIGHT))
+            {
+                movePlayer('r');
+            }
+            else if (GetAsyncKeyState(VK_SPACE))
+            {
+                if (!pFire)
+                {
+                    playerFire();
+                    pFire = true;
+                }
+            }
+            if (!(e1Health <= 0) && enemyToMove == 0)
+            {
+                changeDirectionEnemy1(dir1);
+                moveEnemy1(dir1);
+            }
+            if (!(e2Health <= 0) && enemyToMove == 1)
+            {
+                changeDirectionEnemy2(dir2);
+                moveEnemy2(dir2);
+            }
+            if (!(e3Health <= 0) && enemyToMove == 2)
+            {
+                changeDirectionEnemy3(dir3);
+                moveEnemy3(dir3);
+            }
+            gotoxy(100, 0);
+            cout << "Enemy 1 Health: " << e1Health << "   ";
+            gotoxy(100, 1);
+            cout << "Enemy 2 Health: " << e2Health << "   ";
+            gotoxy(100, 2);
+            cout << "Enemy 3 Health: " << e3Health << "   ";
+            gotoxy(100, 3);
+            cout << "Player Health: " << pHealth << "   ";
+            gotoxy(100, 4);
+            cout << "Score: " << score << "   ";
 
-        if (pFire)
-        {
-            if (!inBoard('|')) // Handling the error, When bullet disapper and cannot be fired again
+            if (pFire)
             {
-                playerFire();
+                if (!inBoard('|')) // Handling the error, When bullet disapper and cannot be fired again
+                {
+                    playerFire();
+                }
+                movePlayerFire();
             }
-            movePlayerFire();
-        }
-        if (collision1)
-        {
-            score += 10;
-            eraseEnemy1();
-            if (e1Health != 0)
-                e1Health--;
-            collision1 = false;
-        }
-        else if (collision2)
-        {
-            score += 10;
-            eraseEnemy2();
-            if (e2Health != 0)
-                e2Health--;
-            collision2 = false;
-        }
-        else if (collision3)
-        {
-            score += 10;
-            eraseEnemy3();
-            if (e3Health != 0) // Sometimes some hitboxes remain and the health goes to -1 and beyond
-                e3Health--;
-            collision3 = false;
-        }
-        if (!e1Fire && !(e1Health <= 0) && enemyToMove == 0)
-        {
-            enemy1Fire();
-            e1Fire = true;
-        }
-        if (e1Fire)
-        {
-            if (!inBoard('!')) // Handling the error, When bullet disapper and cannot be fired again
+            if (collision1)
+            {
+                score += 10;
+                eraseEnemy1();
+                if (e1Health != 0)
+                    e1Health--;
+                collision1 = false;
+            }
+            else if (collision2)
+            {
+                score += 10;
+                eraseEnemy2();
+                if (e2Health != 0)
+                    e2Health--;
+                collision2 = false;
+            }
+            else if (collision3)
+            {
+                score += 10;
+                eraseEnemy3();
+                if (e3Health != 0) // Sometimes some hitboxes remain and the health goes to -1 and beyond
+                    e3Health--;
+                collision3 = false;
+            }
+            if (!e1Fire && !(e1Health <= 0) && enemyToMove == 0)
             {
                 enemy1Fire();
+                e1Fire = true;
             }
-            moveEnemy1Fire();
-        }
-        if (!e2Fire && !(e2Health <= 0) && enemyToMove == 1)
-        {
-            enemy2Fire();
-            e2Fire = true;
-        }
-        if (e2Fire)
-        {
-            if (!inBoard('I')) // Handling the error, When bullet disapper and cannot be fired again
+            if (e1Fire)
+            {
+                if (!inBoard('!')) // Handling the error, When bullet disapper and cannot be fired again
+                {
+                    enemy1Fire();
+                }
+                moveEnemy1Fire();
+            }
+            if (!e2Fire && !(e2Health <= 0) && enemyToMove == 1)
             {
                 enemy2Fire();
+                e2Fire = true;
             }
-            moveEnemy2Fire();
-        }
-        if (!e3Fire && !(e3Health <= 0) && enemyToMove == 2)
-        {
-            enemy3Fire();
-            e3Fire = true;
-        }
-        if (e3Fire)
-        {
-            if (!inBoard('[')) // Handling the error, When bullet disapper and cannot be fired again
+            if (e2Fire)
+            {
+                if (!inBoard('I')) // Handling the error, When bullet disapper and cannot be fired again
+                {
+                    enemy2Fire();
+                }
+                moveEnemy2Fire();
+            }
+            if (!e3Fire && !(e3Health <= 0) && enemyToMove == 2)
             {
                 enemy3Fire();
+                e3Fire = true;
             }
-            moveEnemy3Fire();
-            if (pcollision)
+            if (e3Fire)
             {
-                score -= 10;
-                erasePlayer();
-                if (pHealth != 0)
-                    pHealth--;
-                pcollision = false;
+                if (!inBoard('[')) // Handling the error, When bullet disapper and cannot be fired again
+                {
+                    enemy3Fire();
+                }
+                moveEnemy3Fire();
+                if (pcollision)
+                {
+                    score -= 10;
+                    erasePlayer();
+                    if (pHealth != 0)
+                        pHealth--;
+                    pcollision = false;
+                }
             }
-        }
-        if (score % 50 == 0 && score != 0)
-        {
-            if (!coin)
+            if (score % 50 == 0 && score != 0)
             {
-                generateCoin();
-                coin = true;
+                if (!coin)
+                {
+                    generateCoin();
+                    coin = true;
+                }
             }
+            if (coinCollision)
+            {
+                score += 20;
+                pHealth++;
+                eraseCoin();
+                coinCollision = false;
+            }
+            if (coin) // To prevent coin from disapperaing
+            {
+                placeCoinInBoard();
+                printCoin();
+            }
+            if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
+            {
+                break;
+            }
+            counter++;
+            Sleep(50);
         }
-        if (coinCollision)
+        system("cls");
+        gotoxy(0, 0);
+        if (pHealth == 0)
         {
-            score += 20;
-            pHealth++;
-            eraseCoin();
-            coinCollision = false;
+            cout << "Game Over" << endl;
+            cout << "Your Score is " << score;
         }
-        if (coin) // To prevent coin from disapperaing
+        else
         {
-            placeCoinInBoard();
-            printCoin();
+            cout << "You Win" << endl;
+            cout << "Your Score is " << score;
         }
-        if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
-        {
-            break;
-        }
-        counter++;
-        Sleep(50);
+        return 0;
     }
-    system("cls");
-    gotoxy(0, 0);
-    if (pHealth == 0)
-    {
-        cout << "Game Over" << endl;
-        cout << "Your Score is " << score;
-    }
-    else
-    {
-        cout << "You Win" << endl;
-        cout << "Your Score is " << score;
-    }
-    return 0;
 }
 void gotoxy(int x, int y)
 {
@@ -330,6 +359,115 @@ void gotoxy(int x, int y)
     coordinates.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }
+// Starting Page
+void printBanner()
+{
+    system("cls");
+    X = (getScreenWidth() - 67) / 2;
+    Y = 0;
+    gotoxy(X, Y++);
+    cout << "#     #                                #####                      " << endl;
+    gotoxy(X, Y++);
+    cout << "##   ## ###### #####   ##   #         #     # #      #    #  #### " << endl;
+    gotoxy(X, Y++);
+    cout << "# # # # #        #    #  #  #         #       #      #    # #    #" << endl;
+    gotoxy(X, Y++);
+    cout << "#  #  # #####    #   #    # #          #####  #      #    # #     " << endl;
+    gotoxy(X, Y++);
+    cout << "#     # #        #   ###### #               # #      #    # #  ###" << endl;
+    gotoxy(X, Y++);
+    cout << "#     # #        #   #    # #         #     # #      #    # #    #" << endl;
+    gotoxy(X, Y++);
+    cout << "#     # ######   #   #    # ######     #####  ######  ####   #### " << endl;
+    Y++;
+}
+void printMenu()
+{
+    gotoxy(X, Y++);
+    cout << "1. Play Game" << endl;
+    gotoxy(X, Y++);
+    cout << "2. Instructions" << endl;
+    gotoxy(X, Y++);
+    cout << "3. Exit" << endl;
+}
+void printInstructions()
+{
+    printBanner();
+    gotoxy(X, Y++);
+    cout << "Instructions" << endl;
+    gotoxy(X, Y++);
+    cout << "1. Use left and right arrow keys to move the player." << endl;
+    gotoxy(X, Y++);
+    cout << "2. Press spacebar to fire." << endl;
+    gotoxy(X, Y++);
+    cout << "3. You have 5 lives." << endl;
+    gotoxy(X, Y++);
+    cout << "4. You have to kill all the enemies to win." << endl;
+    gotoxy(X, Y++);
+    cout << "5. You can collect coins to increase your score and health." << endl;
+    gotoxy(X, Y++);
+    cout << "6. You can press escape to exit the game." << endl;
+    gotoxy(X, Y++);
+    cout << "7. Press any key to go back to the main menu." << endl;
+    getch();
+}
+int getScreenWidth()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int columns, rows;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    return columns;
+}
+// Input Validation
+int getNum(string prompt)
+{
+    string num;
+    while (true)
+    {
+        // setcolor(yellow);
+        gotoxy(X, Y++);
+        cout << prompt;
+        cin >> num;
+        // setcolor(white);
+        if (checkInt(num))
+        {
+            return strToInt(num);
+        }
+        else
+        {
+            // setcolor(red);
+            gotoxy(X, Y++);
+            cout << "Invalid Input." << endl;
+            // setcolor(white);
+            gotoxy(X, Y++);
+            cout << "Press any key to try again..................." << endl;
+            getch();
+        }
+    }
+}
+bool checkInt(string num)
+{
+    for (int i = 0; i < num.length(); i++)
+    {
+        if (num[i] < '0' || num[i] > '9')
+        {
+            return false;
+        }
+    }
+    return true;
+}
+int strToInt(string num)
+{
+    int result = 0;
+    for (int i = 0; i < num.length(); i++)
+    {
+        result = result * 10 + (num[i] - '0');
+    }
+    return result;
+}
+// Board
 void drawBoard()
 {
     for (int i = 0; i < boardHeight; i++)
@@ -382,7 +520,7 @@ void generateCoin()
 {
     while (true)
     {
-        coinX = rand() % boardHeight - 10; // To prevent coin from appearing on or below the player
+        coinX = rand() % boardHeight - 10;      // To prevent coin from appearing on or below the player
         coinY = (rand() % boardWidth - 10) + 3; // To prevent coin from appearing with walls
         if (isPositionEmpty(coinX, coinY))
         {
