@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <conio.h>
 #include <windows.h>
 using namespace std;
@@ -84,10 +85,19 @@ void eraseEnemy3Fire();
 void printEnemy3Fire();
 int e3FireX = 0, e3FireY = 0;
 bool e3Fire = false, collision3 = false;
-// Error Handling
-bool inBoard(char);
 // Score
 int score = 0;
+// Error Handling
+bool inBoard(char);
+// File Handling
+int highScore[5],highScoreIndex = 0;
+void storeHighScore(string, int);
+string readField(string, int);
+void loadBoard(string);      // Needs to be fixed
+void saveBoard(string);
+// Saving game state    (saveBoard will also be used here)
+bool savedGame = false;
+void saveGameState();
 // Board and Characters
 const int playerHeight = 5;
 const int playerWidth = 9;
@@ -346,8 +356,11 @@ int main()
         }
         else
         {
+            printBanner();
             cout << "You Win" << endl;
-            cout << "Your Score is " << score;
+            cout << "Your Score is " << score<<endl;
+            cout << "Press any key to return to the main menu....................";
+            getch();
         }
         return 0;
     }
@@ -366,19 +379,23 @@ void printBanner()
     X = (getScreenWidth() - 67) / 2;
     Y = 0;
     gotoxy(X, Y++);
-    cout << "#     #                                #####                      " << endl;
+    cout << "######################################################################" << endl;
     gotoxy(X, Y++);
-    cout << "##   ## ###### #####   ##   #         #     # #      #    #  #### " << endl;
+    cout << "# #     #                                #####                       #" << endl;
     gotoxy(X, Y++);
-    cout << "# # # # #        #    #  #  #         #       #      #    # #    #" << endl;
+    cout << "# ##   ## ###### #####   ##   #         #     # #      #    #  ####  #" << endl;
     gotoxy(X, Y++);
-    cout << "#  #  # #####    #   #    # #          #####  #      #    # #     " << endl;
+    cout << "# # # # # #        #    #  #  #         #       #      #    # #    # #" << endl;
     gotoxy(X, Y++);
-    cout << "#     # #        #   ###### #               # #      #    # #  ###" << endl;
+    cout << "# #  #  # #####    #   #    # #          #####  #      #    # #      #" << endl;
     gotoxy(X, Y++);
-    cout << "#     # #        #   #    # #         #     # #      #    # #    #" << endl;
+    cout << "# #     # #        #   ###### #               # #      #    # #  ### #" << endl;
     gotoxy(X, Y++);
-    cout << "#     # ######   #   #    # ######     #####  ######  ####   #### " << endl;
+    cout << "# #     # #        #   #    # #         #     # #      #    # #    # #" << endl;
+    gotoxy(X, Y++);
+    cout << "# #     # ######   #   #    # ######     #####  ######  ####   ####  #" << endl;
+    gotoxy(X, Y++);
+    cout << "######################################################################" << endl;
     Y++;
 }
 void printMenu()
@@ -396,19 +413,19 @@ void printInstructions()
     gotoxy(X, Y++);
     cout << "Instructions" << endl;
     gotoxy(X, Y++);
-    cout << "1. Use left and right arrow keys to move the player." << endl;
+    cout << "- Use left and right arrow keys to move the player." << endl;
     gotoxy(X, Y++);
-    cout << "2. Press spacebar to fire." << endl;
+    cout << "- Press spacebar to fire." << endl;
     gotoxy(X, Y++);
-    cout << "3. You have 5 lives." << endl;
+    cout << "- You have 5 lives." << endl;
     gotoxy(X, Y++);
-    cout << "4. You have to kill all the enemies to win." << endl;
+    cout << "- You have to kill all the enemies to win." << endl;
     gotoxy(X, Y++);
-    cout << "5. You can collect coins to increase your score and health." << endl;
+    cout << "- You can collect coins to increase your score and health." << endl;
     gotoxy(X, Y++);
-    cout << "6. You can press escape to exit the game." << endl;
+    cout << "- You can press escape to exit the game." << endl;
     gotoxy(X, Y++);
-    cout << "7. Press any key to go back to the main menu." << endl;
+    cout << "  Press any key to go back to the main menu." << endl;
     getch();
 }
 int getScreenWidth()
@@ -1154,3 +1171,63 @@ bool inBoard(char c)
         }
     }
 }
+// File Handling
+string readField(string line, int field)
+{
+    int count = 0;
+    string result = "";
+    for (int i = 0; line[i] != '\0'; i++)
+    {
+        if (line[i] != ',')
+        {
+            result += line[i];
+        }
+        else
+        {
+            count++;
+            if (count == field)
+            {
+                return result;
+            }
+            result = "";
+        }
+    }
+}
+// void loadBoard(string fileName)
+// {
+//     fstream file;
+//     file.open(fileName, ios::in);
+//     if (file.fail())
+//     {
+//         cout << "Error opening " << fileName << endl;
+//         exit(1);
+//     }
+//     for (int i = 0; i < boardHeight; i++)
+//     {
+//         for (int j = 0; j < boardWidth; j++)
+//         {
+//             file >> board[i][j];
+//         }
+//     }
+//     file.close();
+// }
+// void saveBoard(string fileName)
+// {
+//     fstream file;
+//     file.open(fileName, ios::out);
+//     if (file.fail())
+//     {
+//         cout << "Error opening " << fileName << endl;
+//         exit(1);
+//     }
+//     for (int i = 0; i < boardHeight; i++)
+//     {
+//         for (int j = 0; j < boardWidth; j++)
+//         {
+//             file << board[i][j];
+//         }
+//         // file << endl;
+//     }
+//     file.close();
+// }
+
