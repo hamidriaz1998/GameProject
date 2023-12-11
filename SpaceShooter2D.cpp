@@ -8,6 +8,7 @@ void drawBoard();
 void printCoin();
 void eraseCoin();
 void generateCoin();
+void placeCoinInBoard();
 bool isPositionEmpty(int x, int y);
 bool coin = false, coinCollision = false;
 int coinX = 0, coinY = 0;
@@ -156,7 +157,6 @@ int main()
     printEnemy1();
     printEnemy2();
     printEnemy3();
-
     while (true)
     {
         if (GetAsyncKeyState(VK_LEFT))
@@ -280,13 +280,18 @@ int main()
                 pcollision = false;
             }
         }
-        if (score % 50 == 0)
+        if (score % 30 == 0 && score != 0)
         {
             if (!coin)
             {
                 generateCoin();
                 coin = true;
             }
+        }
+        if (coin) // To prevent coin from disapperaing
+        {
+            placeCoinInBoard();
+            printCoin();
         }
         if (coinCollision)
         {
@@ -372,13 +377,19 @@ void eraseCoin()
 }
 void generateCoin()
 {
-    do
+    while (true)
     {
-        coinX = rand() % boardHeight;
-        coinY = rand() % boardWidth;
-    } while (!isPositionEmpty(coinX, coinY));
+        coinX = rand() % boardHeight - 10; // To prevent coin from appearing on or below the player
+        coinY = rand() % 90;
+        if (isPositionEmpty(coinX, coinY))
+        {
+            break;
+        }
+    }
+}
+void placeCoinInBoard()
+{
     board[coinX][coinY] = '$';
-    printCoin();
 }
 bool isPositionEmpty(int x, int y)
 {
@@ -498,7 +509,7 @@ void movePlayerFire()
                 }
                 else if (board[i - 1][pFireY] == '$')
                 {
-                    score += 50;
+                    coinCollision = true;
                     board[i][pFireY] = ' ';
                     board[i - 1][pFireY] = ' ';
                     pFire = false;
