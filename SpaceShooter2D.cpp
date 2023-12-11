@@ -434,15 +434,15 @@ void printScoreBoard()
     gotoxy(100, 1);
     cout << "#                                #";
     gotoxy(100, 2);
-    cout << "#                                #";
+    cout << "#        Enemy 1 Health:         #";
     gotoxy(100, 3);
-    cout << "#                                #";
+    cout << "#        Enemy 2 Health:         #";
     gotoxy(100, 4);
-    cout << "#                                #";
+    cout << "#        Enemy 3 Health:         #";
     gotoxy(100, 5);
-    cout << "#                                #";
+    cout << "#        Player Health:          #";
     gotoxy(100, 6);
-    cout << "#                                #";
+    cout << "#        Score:                  #";
     gotoxy(100, 7);
     cout << "#                                #";
     gotoxy(100, 8);
@@ -450,16 +450,16 @@ void printScoreBoard()
 }
 void printScore()
 {
-    gotoxy(109, 2);
-    cout << "Enemy 1 Health: " << e1Health << "   ";
-    gotoxy(109, 3);
-    cout << "Enemy 2 Health: " << e2Health << "   ";
-    gotoxy(109, 4);
-    cout << "Enemy 3 Health: " << e3Health << "   ";
-    gotoxy(109, 5);
-    cout << "Player Health: " << pHealth << "   ";
-    gotoxy(109, 6);
-    cout << "Score: " << score << "   ";
+    gotoxy(125, 2);
+    cout << e1Health;
+    gotoxy(125, 3);
+    cout << e2Health;
+    gotoxy(125, 4);
+    cout << e3Health;
+    gotoxy(124, 5);
+    cout << pHealth;
+    gotoxy(116, 6);
+    cout << score;
 }
 int getScreenWidth()
 {
