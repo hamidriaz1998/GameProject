@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <windows.h>
 using namespace std;
-void gotoxy(int x, int y);
+void gotoxy(int x, int y); // Set enemy coordinates to their respective place in board in the reset function in global scope and optimize printBoard() function
 // Starting Page
 void printBanner();
 void printMenu();
@@ -49,7 +49,7 @@ void changeDirectionEnemy1(char &direction);
 void createEnemy1Hitbox();
 void eraseEnemy1Hitbox();
 void moveEnemy1(char direction);
-int e1X = 0, e1Y = 0, e1Health = 5;
+int e1X = 6, e1Y = 9, e1Health = 5;
 // Enemy 1 Fire
 void enemy1Fire();
 void moveEnemy1Fire();
@@ -64,7 +64,7 @@ void changeDirectionEnemy2(char &direction);
 void createEnemy2Hitbox();
 void eraseEnemy2Hitbox();
 void moveEnemy2(char direction);
-int e2X = 0, e2Y = 0, e2Health = 5;
+int e2X = 14, e2Y = 0, e2Health = 5;
 // Enemy 2 Fire
 void enemy2Fire();
 void moveEnemy2Fire();
@@ -79,7 +79,7 @@ void changeDirectionEnemy3(char &direction);
 void createEnemy3Hitbox();
 void eraseEnemy3Hitbox();
 void moveEnemy3(char direction);
-int e3X = 0, e3Y = 0, e3Health = 5;
+int e3X = 6, e3Y = 0, e3Health = 5;
 // Enemy 3 Fire
 void enemy3Fire();
 void moveEnemy3Fire();
@@ -95,12 +95,7 @@ bool inBoard(char);
 int highScore[5], highScoreIndex = 0;
 void storeHighScore(string, int);
 string readField(string, int);
-void loadBoard(string); // Needs to be fixed
-void saveBoard(string);
-// Saving game state    (saveBoard will also be used here)
-bool savedGame = false;
-void saveGameState();
-// Board and Characters
+
 const int playerHeight = 5;
 const int playerWidth = 9;
 const int enemyHeight = 5;
@@ -333,35 +328,32 @@ mainMenu:
                 placeCoinInBoard();
                 printCoin();
             }
+            counter++;
+            printScore();
+            Sleep(50);
             if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
             {
                 break;
             }
-            counter++;
-            printScore();
-            Sleep(50);
         }
-        system("cls");
-        gotoxy(0, 0);
-        if (pHealth == 0)
-        {
-            printBanner();
-            cout << "Game Over" << endl;
-            cout << "Your Score is " << score;
-            cout << "Press any key to return to the main menu....................";
-            getch();
-            goto mainMenu;
-        }
-        else
-        {
-            printBanner();
-            cout << "You Win" << endl;
-            cout << "Your Score is " << score << endl;
-            cout << "Press any key to return to the main menu....................";
-            getch();
-            goto mainMenu;
-        }
-        return 0;
+    }
+    if (pHealth == 0)
+    {
+        printBanner();
+        cout << "Game Over" << endl;
+        cout << "Your Score is " << score;
+        cout << "Press any key to return to the main menu....................";
+        getch();
+        goto mainMenu;
+    }
+    else
+    {
+        printBanner();
+        cout << "You Win" << endl;
+        cout << "Your Score is " << score << endl;
+        cout << "Press any key to return to the main menu....................";
+        getch();
+        goto mainMenu;
     }
 }
 void gotoxy(int x, int y)
