@@ -33,7 +33,7 @@ void movePlayer(char direction);
 void createPlayerHitbox();
 void erasePlayerHitbox();
 const int pX = 30;
-int pY = 0, pHealth = 5;
+int pY = 7, pHealth = 5;
 // Player Fire
 void playerFire();
 void movePlayerFire();
@@ -64,7 +64,7 @@ void changeDirectionEnemy2(char &direction);
 void createEnemy2Hitbox();
 void eraseEnemy2Hitbox();
 void moveEnemy2(char direction);
-int e2X = 14, e2Y = 0, e2Health = 5;
+int e2X = 14, e2Y =56, e2Health = 5;
 // Enemy 2 Fire
 void enemy2Fire();
 void moveEnemy2Fire();
@@ -79,7 +79,7 @@ void changeDirectionEnemy3(char &direction);
 void createEnemy3Hitbox();
 void eraseEnemy3Hitbox();
 void moveEnemy3(char direction);
-int e3X = 6, e3Y = 0, e3Health = 5;
+int e3X = 6, e3Y = 45, e3Health = 5;
 // Enemy 3 Fire
 void enemy3Fire();
 void moveEnemy3Fire();
@@ -341,8 +341,11 @@ mainMenu:
     if (pHealth == 0)
     {
         printBanner();
+        gotoxy(X, Y++);
         cout << "Game Over" << endl;
+        gotoxy(X, Y++);
         cout << "Your Score is " << score << endl;
+        gotoxy(X, Y++);
         cout << "Press Enter key to return to the main menu....................";
         cin >> temp;
         goto mainMenu;
@@ -350,8 +353,11 @@ mainMenu:
     else
     {
         printBanner();
+        gotoxy(X, Y++);
         cout << "You Win" << endl;
+        gotoxy(X, Y++);
         cout << "Your Score is " << score << endl;
+        gotoxy(X, Y++);
         cout << "Press Enter key to return to the main menu....................";
         cin >> temp;
         goto mainMenu;
@@ -513,6 +519,10 @@ int strToInt(string num)
 // Board
 void drawBoard()
 {
+    board[pX][pY] = 'p';
+    board[e1X][e1Y] = 'X';
+    board[e2X][e2Y] = 'Y';
+    board[e3X][e3Y] = 'Z';
     for (int i = 0; i < boardHeight; i++)
     {
         for (int j = 0; j < boardWidth; j++)
@@ -524,19 +534,16 @@ void drawBoard()
             }
             else if (board[i][j] == 'X')
             {
-                e1X = i;
                 e1Y = j;
                 printEnemy1();
             }
             else if (board[i][j] == 'Y')
             {
-                e2X = i;
                 e2Y = j;
                 printEnemy2();
             }
             else if (board[i][j] == 'Z')
             {
-                e3X = i;
                 e3Y = j;
                 printEnemy3();
             }
