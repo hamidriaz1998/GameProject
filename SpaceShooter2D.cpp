@@ -3,7 +3,9 @@
 #include <conio.h>
 #include <windows.h>
 using namespace std;
-void gotoxy(int x, int y); // Set enemy coordinates to their respective place in board in the reset function in global scope and optimize printBoard() function
+void gotoxy(int x, int y);
+void hideCursor();
+void showCursor();
 // Starting Page
 void printBanner();
 void printMenu();
@@ -89,13 +91,14 @@ int e3FireX = 0, e3FireY = 0;
 bool e3Fire = false, collision3 = false;
 // Score
 int score = 0;
+void setHighScore();
 int highScore[5] = {0, 0, 0, 0, 0};
 int highScoreIndex = 0;
 // Error Handling
 bool inBoard(char);
 // File Handling
 void storeHighScore();
-string readField(string, int);
+void readHighScore();
 // New Game
 void resetAllValues();
 void resetBoard();
@@ -197,6 +200,7 @@ mainMenu:
         printEnemy1();
         printEnemy2();
         printEnemy3();
+        hideCursor();
         int counter = 0;
         while (true)
         {
@@ -337,6 +341,7 @@ mainMenu:
             Sleep(50);
             if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
             {
+                showCursor();
                 break;
             }
         }
@@ -377,6 +382,22 @@ void gotoxy(int x, int y)
     coordinates.X = x;
     coordinates.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
+}
+void hideCursor()
+{
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    info.bVisible = FALSE;
+    SetConsoleCursorInfo(consoleHandle, &info);
+}
+void showCursor()
+{
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    info.bVisible = TRUE;
+    SetConsoleCursorInfo(consoleHandle, &info);
 }
 // Starting Page
 void printBanner()
@@ -1198,6 +1219,10 @@ void printEnemy3Fire()
             break;
         }
     }
+}
+void setHighScore(int score)
+{
+    // store score at appropriate index in highScores array
 }
 bool inBoard(char c)
 {
