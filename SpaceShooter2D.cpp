@@ -32,7 +32,7 @@ void printPlayer();
 void movePlayer(char direction);
 void createPlayerHitbox();
 void erasePlayerHitbox();
-const int pX = 30;
+int pX = 30;
 int pY = 7, pHealth = 5;
 // Player Fire
 void playerFire();
@@ -64,7 +64,7 @@ void changeDirectionEnemy2(char &direction);
 void createEnemy2Hitbox();
 void eraseEnemy2Hitbox();
 void moveEnemy2(char direction);
-int e2X = 14, e2Y =56, e2Health = 5;
+int e2X = 14, e2Y = 56, e2Health = 5;
 // Enemy 2 Fire
 void enemy2Fire();
 void moveEnemy2Fire();
@@ -95,6 +95,9 @@ bool inBoard(char);
 int highScore[5], highScoreIndex = 0;
 void storeHighScore(string, int);
 string readField(string, int);
+// New Game
+void resetAllValues();
+void resetBoard();
 
 const int playerHeight = 5;
 const int playerWidth = 9;
@@ -348,6 +351,8 @@ mainMenu:
         gotoxy(X, Y++);
         cout << "Press Enter key to return to the main menu....................";
         cin >> temp;
+        resetBoard();
+        resetAllValues();
         goto mainMenu;
     }
     else
@@ -360,6 +365,8 @@ mainMenu:
         gotoxy(X, Y++);
         cout << "Press Enter key to return to the main menu....................";
         cin >> temp;
+        resetBoard();
+        resetAllValues();
         goto mainMenu;
     }
 }
@@ -1226,40 +1233,40 @@ string readField(string line, int field)
         }
     }
 }
-// void loadBoard(string fileName)
-// {
-//     fstream file;
-//     file.open(fileName, ios::in);
-//     if (file.fail())
-//     {
-//         cout << "Error opening " << fileName << endl;
-//         exit(1);
-//     }
-//     for (int i = 0; i < boardHeight; i++)
-//     {
-//         for (int j = 0; j < boardWidth; j++)
-//         {
-//             file >> board[i][j];
-//         }
-//     }
-//     file.close();
-// }
-// void saveBoard(string fileName)
-// {
-//     fstream file;
-//     file.open(fileName, ios::out);
-//     if (file.fail())
-//     {
-//         cout << "Error opening " << fileName << endl;
-//         exit(1);
-//     }
-//     for (int i = 0; i < boardHeight; i++)
-//     {
-//         for (int j = 0; j < boardWidth; j++)
-//         {
-//             file << board[i][j];
-//         }
-//         // file << endl;
-//     }
-//     file.close();
-// }
+void resetAllValues()
+{
+    pX = 30;
+    pY = 7;
+    e1X = 6;
+    e1Y = 9;
+    e2X = 14;
+    e2Y = 56;
+    e3X = 6;
+    e3Y = 45;
+    pHealth = 5;
+    e1Health = 5;
+    e2Health = 5;
+    e3Health = 5;
+    score = 0;
+    pFire = false;
+    e1Fire = false;
+    e2Fire = false;
+    e3Fire = false;
+    collision1 = false;
+    collision2 = false;
+    collision3 = false;
+    pcollision = false;
+    coin = false;
+    coinCollision = false;
+}
+void resetBoard()
+{
+    for (int i = 0; i < boardHeight; i++)
+    {
+        for (int j = 0; j < boardWidth; j++)
+        {
+            if (board[i][j] != '#')
+                board[i][j] = ' ';
+        }
+    }
+}
