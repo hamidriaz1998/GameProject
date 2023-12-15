@@ -93,7 +93,6 @@ bool e3Fire = false, collision3 = false;
 int score = 0;
 void setHighScore();
 int highScore[5] = {0, 0, 0, 0, 0};
-int highScoreIndex = 0;
 // Error Handling
 bool inBoard(char);
 // File Handling
@@ -173,16 +172,38 @@ char enemy3[enemyHeight][enemyWidth] = {
     "   \\/   "};
 int main()
 {
+    readHighScore();
 // Starting Page
 mainMenu:
     printBanner();
     printMenu();
     int choice = getNum("Enter your choice: ");
-    if (choice == 3)
+    if (choice == 4)
     { // Exit
+        storeHighScore();
         return 0;
     }
     else if (choice == 2)
+    {
+        printBanner();
+        gotoxy(X, Y++);
+        cout << "High Score" << endl;
+        gotoxy(X, Y++);
+        cout << "1. " << highScore[0] << endl;
+        gotoxy(X, Y++);
+        cout << "2. " << highScore[1] << endl;
+        gotoxy(X, Y++);
+        cout << "3. " << highScore[2] << endl;
+        gotoxy(X, Y++);
+        cout << "4. " << highScore[3] << endl;
+        gotoxy(X, Y++);
+        cout << "5. " << highScore[4] << endl;
+        gotoxy(X, Y++);
+        cout << "Press any key to return to the main menu....................";
+        getch();
+        goto mainMenu;
+    }
+    else if (choice == 3)
     { // Instructions
         printInstructions();
         goto mainMenu;
@@ -342,6 +363,7 @@ mainMenu:
             if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
             {
                 showCursor();
+                setHighScore();
                 break;
             }
         }
@@ -430,9 +452,11 @@ void printMenu()
     gotoxy(X, Y++);
     cout << "1. Play Game" << endl;
     gotoxy(X, Y++);
-    cout << "2. Instructions" << endl;
+    cout << "2. High Score" << endl;
     gotoxy(X, Y++);
-    cout << "3. Exit" << endl;
+    cout << "3. Instructions" << endl;
+    gotoxy(X, Y++);
+    cout << "4. Exit" << endl;
 }
 void printInstructions()
 {
@@ -1220,9 +1244,20 @@ void printEnemy3Fire()
         }
     }
 }
-void setHighScore(int score)
+void setHighScore()
 {
-    // store score at appropriate index in highScores array
+    for (int i = 0; i < 5; i++)
+    {
+        if (score > highScore[i])
+        {
+            highScore[i] = score;
+            for (int j = 4; j > i; j--)
+            {
+                highScore[j] = highScore[j - 1];
+            }
+            break;
+        }
+    }
 }
 bool inBoard(char c)
 {
@@ -1242,10 +1277,10 @@ void storeHighScore()
 {
     fstream f;
     f.open("highScore.txt", ios::out);
-    for (int i = 0; i < highScoreIndex; i++)
+    for (int i = 0; i < 5; i++)
     {
         f << highScore[i];
-        if (i != highScoreIndex - 1)
+        if (i != 4)
         {
             f << endl;
         }
@@ -1262,10 +1297,11 @@ void readHighScore()
         exit(1);
     }
     string temp;
+    int i = 0;
     while (getline(f, temp))
     {
-        highScore[highScoreIndex] = strToInt(temp);
-        highScoreIndex++;
+        highScore[i] = strToInt(temp);
+        i++;
     }
     f.close();
 }
