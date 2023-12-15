@@ -89,11 +89,12 @@ int e3FireX = 0, e3FireY = 0;
 bool e3Fire = false, collision3 = false;
 // Score
 int score = 0;
+int highScore[5] = {0, 0, 0, 0, 0};
+int highScoreIndex = 0;
 // Error Handling
 bool inBoard(char);
 // File Handling
-int highScore[5], highScoreIndex = 0;
-void storeHighScore(string, int);
+void storeHighScore();
 string readField(string, int);
 // New Game
 void resetAllValues();
@@ -1212,26 +1213,36 @@ bool inBoard(char c)
     }
 }
 // File Handling
-string readField(string line, int field)
+void storeHighScore()
 {
-    int count = 0;
-    string result = "";
-    for (int i = 0; line[i] != '\0'; i++)
+    fstream f;
+    f.open("highScore.txt", ios::out);
+    for (int i = 0; i < highScoreIndex; i++)
     {
-        if (line[i] != ',')
+        f << highScore[i];
+        if (i != highScoreIndex - 1)
         {
-            result += line[i];
-        }
-        else
-        {
-            count++;
-            if (count == field)
-            {
-                return result;
-            }
-            result = "";
+            f << endl;
         }
     }
+    f.close();
+}
+void readHighScore()
+{
+    fstream f;
+    f.open("highScore.txt", ios::in);
+    if (f.fail())
+    {
+        cout << "Error in opening file: highScore.txt";
+        exit(1);
+    }
+    string temp;
+    while (getline(f, temp))
+    {
+        highScore[highScoreIndex] = strToInt(temp);
+        highScoreIndex++;
+    }
+    f.close();
 }
 void resetAllValues()
 {
