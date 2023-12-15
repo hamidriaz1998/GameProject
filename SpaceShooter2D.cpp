@@ -337,13 +337,14 @@ mainMenu:
             }
         }
     }
+    string temp;
     if (pHealth == 0)
     {
         printBanner();
         cout << "Game Over" << endl;
-        cout << "Your Score is " << score;
-        cout << "Press any key to return to the main menu....................";
-        getch();
+        cout << "Your Score is " << score << endl;
+        cout << "Press Enter key to return to the main menu....................";
+        cin >> temp;
         goto mainMenu;
     }
     else
@@ -351,8 +352,8 @@ mainMenu:
         printBanner();
         cout << "You Win" << endl;
         cout << "Your Score is " << score << endl;
-        cout << "Press any key to return to the main menu....................";
-        getch();
+        cout << "Press Enter key to return to the main menu....................";
+        cin >> temp;
         goto mainMenu;
     }
 }
