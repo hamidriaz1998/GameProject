@@ -96,6 +96,8 @@ int highScore[5] = {0, 0, 0, 0, 0};
 // Difficulty
 int difficulty = 1;
 void setBarriers(bool &barrier1, bool &barrier3);
+void printBarriers(bool barrier1, bool barrier3);
+void eraseBarriers(bool barrier1, bool barrier3);
 // Error Handling
 bool inBoard(char);
 // File Handling
@@ -234,6 +236,7 @@ mainMenu:
         char dir2 = 'r';
         char dir3 = 'r';
         system("cls");
+        printBarriers(barrier1, barrier3);
         drawBoard();
         printScoreBoard();
         printPlayer();
@@ -597,7 +600,6 @@ void drawBoard()
     board[e1X][e1Y] = 'X';
     board[e2X][e2Y] = 'Y';
     board[e3X][e3Y] = 'Z';
-    board[8][43] = '#';
     printPlayer();
     printEnemy1();
     printEnemy2();
@@ -1280,6 +1282,44 @@ void setBarriers(bool &barrier1, bool &barrier3)
     {
         barrier1 = false;
         barrier3 = false;
+    }
+}
+void printBarriers(bool barrier1, bool barrier3)
+{
+    if (barrier3)
+    {
+        for (int i = 43; i < boardWidth - 2; i++)
+        {
+            board[8][i] = '#';
+        }
+    }
+    if (barrier1)
+    {
+        for (int i = 1; i < 44; i++)
+        {
+            board[8][i] = '#';
+        }
+    }
+}
+void eraseBarriers(bool barrier1, bool barrier3)
+{
+    if (barrier3)
+    {
+        for (int i = 43; i < boardWidth - 2; i++)
+        {
+            board[8][i] = ' ';
+            gotoxy(i, 8);
+            cout << " ";
+        }
+    }
+    if (barrier1)
+    {
+        for (int i = 1; i < 44; i++)
+        {
+            board[8][i] = ' ';
+            gotoxy(i, 8);
+            cout << " ";
+        }
     }
 }
 bool inBoard(char c)
