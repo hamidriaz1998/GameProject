@@ -109,6 +109,7 @@ void cleanChar(char);
 // File Handling
 void storeData();
 bool readData();
+void loadBoard();
 // New Game
 void resetAllValues();
 void resetBoard();
@@ -119,44 +120,7 @@ const int enemyHeight = 5;
 const int enemyWidth = 9;
 const int boardHeight = 36, boardWidth = 90;
 
-char board[boardHeight][boardWidth] = {
-    "#########################################################################################",
-    "#                                         ###                                           #",
-    "#                                         ###                                           #",
-    "#                                         ###                                           #",
-    "#                                         ###                                           #",
-    "#                                         ###                                           #",
-    "#                                         ###                                           #",
-    "#                                         ###                                           #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#                                                                                       #",
-    "#########################################################################################"};
-
+char board[boardHeight][boardWidth];
 char player2D[playerHeight][playerWidth] = {
     "   /\\   ",
     "  /  \\  ",
@@ -183,6 +147,7 @@ char enemy3[enemyHeight][enemyWidth] = {
     "   \\/   "};
 int main()
 {
+    loadBoard();
     if (!readData())
     {
         difficulty = 1;
@@ -1545,6 +1510,22 @@ bool readData()
     }
     f.close();
     return true;
+}
+void loadBoard()
+{
+    fstream f;
+    f.open("board.txt", ios::in);
+    string line;
+    int row = 0;
+    while (getline(f, line))
+    {
+        for (int i = 0; i < line.length(); i++)
+        {
+            board[row][i] = line[i];
+        }
+        row++;
+    }
+    f.close();
 }
 void resetAllValues()
 {
