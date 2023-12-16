@@ -1248,6 +1248,8 @@ void setHighScore()
 {
     for (int i = 0; i < 5; i++)
     {
+        if (score == highScore[i])
+            break;
         if (score > highScore[i])
         {
             highScore[i] = score;
