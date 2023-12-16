@@ -406,7 +406,6 @@ mainMenu:
             counter++;
             printScore();
             setBarrierStatus(barrier1, barrier3);
-            // eraseBarriers(barrier1, barrier3);
             if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
             {
                 showCursor();
@@ -430,6 +429,8 @@ mainMenu:
         cin >> temp;
         goto mainMenu;
     }
+    if (difficulty == 2)
+        barrier1Erased = false;
     if (difficulty == 4)
     {
         if (pHealth == 0)
@@ -444,6 +445,7 @@ mainMenu:
             cin >> temp;
             resetBoard();
             resetAllValues();
+            difficulty = 1;
             goto mainMenu;
         }
         else
