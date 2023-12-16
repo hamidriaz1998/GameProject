@@ -193,6 +193,7 @@ mainMenu:
     // Setting Barriers based on difficulty
     bool barrier1;
     bool barrier3;
+    bool exit = false;
     printBanner();
     printMenu();
     int choice = getNum("Enter your choice: ");
@@ -272,6 +273,13 @@ mainMenu:
                     playerFire();
                     pFire = true;
                 }
+            }
+            else if (GetAsyncKeyState(VK_ESCAPE))
+            {
+                showCursor();
+                setHighScore();
+                exit = true;
+                break;
             }
             if (!(e1Health <= 0) && enemyToMove == 0 && !barrier1)
             {
@@ -410,6 +418,18 @@ mainMenu:
         }
     }
     string temp;
+    if (exit)
+    {
+        printBanner();
+        gotoxy(X, Y++);
+        cout << "You exited the game." << endl;
+        gotoxy(X, Y++);
+        cout << "Your Score is: " << score << endl;
+        gotoxy(X, Y++);
+        cout << "Press Enter key to return to the main menu....................";
+        cin >> temp;
+        goto mainMenu;
+    }
     if (difficulty == 4)
     {
         if (pHealth == 0)
