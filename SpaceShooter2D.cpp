@@ -596,6 +596,7 @@ void printInstructions()
 }
 void printScoreBoard()
 {
+    setColor(magenta);
     gotoxy(100, 0);
     cout << "##################################";
     gotoxy(100, 1);
@@ -616,9 +617,11 @@ void printScoreBoard()
     cout << "#                                #";
     gotoxy(100, 9);
     cout << "##################################";
+    setColor(white);
 }
 void printScore()
 {
+    setColor(magenta);
     gotoxy(125, 3);
     cout << e1Health;
     gotoxy(125, 4);
@@ -629,6 +632,7 @@ void printScore()
     cout << pHealth;
     gotoxy(116, 7);
     cout << score;
+    setColor(white);
 }
 int getScreenWidth()
 {
