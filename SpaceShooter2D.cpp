@@ -193,8 +193,6 @@ mainMenu:
     // Setting Barriers based on difficulty
     bool barrier1;
     bool barrier3;
-    setBarriers(barrier1, barrier3);
-    setHealth();
     printBanner();
     printMenu();
     int choice = getNum("Enter your choice: ");
@@ -239,7 +237,10 @@ mainMenu:
     }
     else if (choice == 1)
     {
-        // Play Game
+    // Play Game
+    playGame:
+        setBarriers(barrier1, barrier3);
+        setHealth();
         char dir1 = 'r';
         char dir2 = 'r';
         char dir3 = 'r';
@@ -402,39 +403,55 @@ mainMenu:
             {
                 showCursor();
                 setHighScore();
+                difficulty++;
                 break;
             }
             Sleep(50);
         }
     }
     string temp;
-    if (pHealth == 0)
+    if (difficulty == 4)
     {
-        printBanner();
-        gotoxy(X, Y++);
-        cout << "Game Over" << endl;
-        gotoxy(X, Y++);
-        cout << "Your Score is " << score << endl;
-        gotoxy(X, Y++);
-        cout << "Press Enter key to return to the main menu....................";
-        cin >> temp;
-        resetBoard();
-        resetAllValues();
-        goto mainMenu;
+        if (pHealth == 0)
+        {
+            printBanner();
+            gotoxy(X, Y++);
+            cout << "Game Over" << endl;
+            gotoxy(X, Y++);
+            cout << "Your Score is " << score << endl;
+            gotoxy(X, Y++);
+            cout << "Press Enter key to return to the main menu....................";
+            cin >> temp;
+            resetBoard();
+            resetAllValues();
+            goto mainMenu;
+        }
+        else
+        {
+            printBanner();
+            gotoxy(X, Y++);
+            cout << "You Win" << endl;
+            gotoxy(X, Y++);
+            cout << "Your Score is " << score << endl;
+            gotoxy(X, Y++);
+            cout << "Press Enter key to return to the main menu....................";
+            cin >> temp;
+            resetBoard();
+            resetAllValues();
+            goto mainMenu;
+        }
     }
     else
     {
         printBanner();
         gotoxy(X, Y++);
-        cout << "You Win" << endl;
+        cout << "Congrats! You have completed this difficulty level." << endl;
         gotoxy(X, Y++);
-        cout << "Your Score is " << score << endl;
+        cout << "Your current score is: " << score << endl;
         gotoxy(X, Y++);
-        cout << "Press Enter key to return to the main menu....................";
+        cout << "Press Enter key to continue to the next difficulty level....................";
         cin >> temp;
-        resetBoard();
-        resetAllValues();
-        goto mainMenu;
+        goto playGame;
     }
 }
 void gotoxy(int x, int y)
@@ -527,31 +544,33 @@ void printScoreBoard()
     gotoxy(100, 1);
     cout << "#                                #";
     gotoxy(100, 2);
-    cout << "#        Enemy 1 Health:         #";
+    cout << "#        Difficulty: " << difficulty << "           #";
     gotoxy(100, 3);
-    cout << "#        Enemy 2 Health:         #";
+    cout << "#        Enemy 1 Health:         #";
     gotoxy(100, 4);
-    cout << "#        Enemy 3 Health:         #";
+    cout << "#        Enemy 2 Health:         #";
     gotoxy(100, 5);
-    cout << "#        Player Health:          #";
+    cout << "#        Enemy 3 Health:         #";
     gotoxy(100, 6);
-    cout << "#        Score:                  #";
+    cout << "#        Player Health:          #";
     gotoxy(100, 7);
-    cout << "#                                #";
+    cout << "#        Score:                  #";
     gotoxy(100, 8);
+    cout << "#                                #";
+    gotoxy(100, 9);
     cout << "##################################";
 }
 void printScore()
 {
-    gotoxy(125, 2);
-    cout << e1Health;
     gotoxy(125, 3);
-    cout << e2Health;
+    cout << e1Health;
     gotoxy(125, 4);
+    cout << e2Health;
+    gotoxy(125, 5);
     cout << e3Health;
-    gotoxy(124, 5);
+    gotoxy(124, 6);
     cout << pHealth;
-    gotoxy(116, 6);
+    gotoxy(116, 7);
     cout << score;
 }
 int getScreenWidth()
