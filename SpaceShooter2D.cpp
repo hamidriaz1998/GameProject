@@ -6,6 +6,8 @@ using namespace std;
 void gotoxy(int x, int y);
 void hideCursor();
 void showCursor();
+string setColor(unsigned short color);
+int black = 0, blue = 1, green = 2, cyan = 3, red = 4, magenta = 5, brown = 6, lightwhite = 7, darkwhite = 8, lightblue = 9, lightgreen = 10, lightcyan = 11, lightred = 12, lightmagenta = 13, yellow = 14, white = 15;
 // Starting Page
 void printBanner();
 void printMenu();
@@ -207,6 +209,7 @@ mainMenu:
     {
         printBanner();
         gotoxy(X, Y++);
+        setColor(lightblue);
         cout << "Choose one of the following difficulties" << endl;
         gotoxy(X, Y++);
         cout << "1. Easy" << endl;
@@ -214,6 +217,7 @@ mainMenu:
         cout << "2. Medium" << endl;
         gotoxy(X, Y++);
         cout << "3. Hard" << endl;
+        setColor(white);
         difficulty = getNum("Enter your choice: ");
         goto mainMenu;
     }
@@ -221,14 +225,16 @@ mainMenu:
     {
         printBanner();
         gotoxy(X, Y++);
+        setColor(lightblue);
         cout << "High Score" << endl;
         for (int i = 0; i < 5; i++)
         {
             gotoxy(X, Y++);
             cout << i + 1 << ". " << highScore[i] << endl;
         }
+        setColor(white);
         gotoxy(X, Y++);
-        cout << "Press any key to return to the main menu....................";
+        cout << setColor(yellow) << "Press any key to return to the main menu....................";
         getch();
         goto mainMenu;
     }
@@ -517,12 +523,19 @@ void showCursor()
     info.bVisible = TRUE;
     SetConsoleCursorInfo(consoleHandle, &info);
 }
+string setColor(unsigned short color)
+{
+    HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hcon, color);
+    return "";
+}
 // Starting Page
 void printBanner()
 {
     system("cls");
     X = (getScreenWidth() - 67) / 2;
     Y = 0;
+    setColor(cyan);
     gotoxy(X, Y++);
     cout << "######################################################################" << endl;
     gotoxy(X, Y++);
@@ -541,10 +554,12 @@ void printBanner()
     cout << "# #     # ######   #   #    # ######     #####  ######  ####   ####  #" << endl;
     gotoxy(X, Y++);
     cout << "######################################################################" << endl;
+    setColor(white);
     Y++;
 }
 void printMenu()
 {
+    setColor(blue);
     gotoxy(X, Y++);
     cout << "1. Play Game" << endl;
     gotoxy(X, Y++);
@@ -555,26 +570,28 @@ void printMenu()
     cout << "4. Instructions" << endl;
     gotoxy(X, Y++);
     cout << "5. Exit" << endl;
+    setColor(white);
 }
 void printInstructions()
 {
     printBanner();
     gotoxy(X, Y++);
+    setColor(lightblue);
     cout << "Instructions" << endl;
     gotoxy(X, Y++);
     cout << "- Use left and right arrow keys to move the player." << endl;
     gotoxy(X, Y++);
     cout << "- Press spacebar to fire." << endl;
     gotoxy(X, Y++);
-    cout << "- You have 5 lives." << endl;
-    gotoxy(X, Y++);
     cout << "- You have to kill all the enemies to win." << endl;
     gotoxy(X, Y++);
     cout << "- You can collect coins to increase your score and health." << endl;
     gotoxy(X, Y++);
-    cout << "- You can press escape to exit the game." << endl;
+    cout << "- You can press escape to exit the game.................." << endl;
+    setColor(white);
+    Y++;
     gotoxy(X, Y++);
-    cout << "  Press any key to go back to the main menu." << endl;
+    cout << setColor(yellow) << "  Press any key to go back to the main menu." << endl;
     getch();
 }
 void printScoreBoard()
@@ -628,21 +645,21 @@ int getNum(string prompt)
     string num;
     while (true)
     {
-        // setcolor(yellow);
+        setColor(yellow);
         gotoxy(X, Y++);
         cout << prompt;
         cin >> num;
-        // setcolor(white);
+        setColor(white);
         if (checkInt(num))
         {
             return strToInt(num);
         }
         else
         {
-            // setcolor(red);
+            setColor(red);
             gotoxy(X, Y++);
             cout << "Invalid Input." << endl;
-            // setcolor(white);
+            setColor(white);
             gotoxy(X, Y++);
             cout << "Press any key to try again..................." << endl;
             getch();
