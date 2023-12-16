@@ -95,6 +95,7 @@ void setHighScore();
 int highScore[5] = {0, 0, 0, 0, 0};
 // Difficulty
 int difficulty = 1;
+void setHealth();
 void setBarriers(bool &barrier1, bool &barrier3);
 void printBarriers(bool barrier1, bool barrier3);
 void eraseBarriers(bool barrier1, bool barrier3);
@@ -193,6 +194,7 @@ mainMenu:
     bool barrier1;
     bool barrier3;
     setBarriers(barrier1, barrier3);
+    setHealth();
     printBanner();
     printMenu();
     int choice = getNum("Enter your choice: ");
@@ -1282,6 +1284,30 @@ void setHighScore()
             highScore[j] = highScore[j - 1];
         }
         highScore[i] = score;
+    }
+}
+void setHealth()
+{
+    if (difficulty == 1)
+    {
+        e1Health = 5;
+        e2Health = 5;
+        e3Health = 5;
+        pHealth = 7;
+    }
+    else if (difficulty == 2)
+    {
+        e1Health = 6;
+        e2Health = 6;
+        e3Health = 6;
+        pHealth = 5;
+    }
+    else
+    {
+        e1Health = 7;
+        e2Health = 7;
+        e3Health = 7;
+        pHealth = 3;
     }
 }
 void setBarriers(bool &barrier1, bool &barrier3)
