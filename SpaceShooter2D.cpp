@@ -182,6 +182,10 @@ int main()
     if (!readData())
     {
         difficulty = 1;
+        for (int i = 0; i < 5; i++)
+        {
+            highScore[i] = 50 - i;
+        }
     }
 // Starting Page
 mainMenu:
