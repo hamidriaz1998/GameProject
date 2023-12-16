@@ -354,7 +354,8 @@ mainMenu:
                 moveEnemy3Fire();
                 if (pcollision)
                 {
-                    score -= 10;
+                    if (score != 0)
+                        score -= 10;
                     erasePlayer();
                     if (pHealth != 0)
                         pHealth--;
