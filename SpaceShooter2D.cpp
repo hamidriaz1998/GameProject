@@ -697,6 +697,7 @@ void drawBoard()
     printEnemy1();
     printEnemy2();
     printEnemy3();
+    setColor(magenta);
     for (int i = 0; i < boardHeight; i++)
     {
         for (int j = 0; j < boardWidth; j++)
@@ -705,6 +706,7 @@ void drawBoard()
             cout << board[i][j];
         }
     }
+    setColor(white);
 }
 // Coin Functions
 void printCoin()
@@ -755,6 +757,7 @@ void erasePlayer()
 }
 void printPlayer()
 {
+    setColor(green);
     for (int i = 0; i < playerHeight; i++)
     {
         for (int j = 0; j < playerWidth; j++)
@@ -763,6 +766,7 @@ void printPlayer()
             cout << player2D[i][j];
         }
     }
+    setColor(white);
 }
 void movePlayer(char direction)
 {
@@ -889,6 +893,7 @@ void erasePlayerFire()
 }
 void printPlayerFire()
 {
+    setColor(green);
     for (int i = 0; i < boardHeight; i++)
     {
         if (board[i][pFireY] == '|')
@@ -898,6 +903,7 @@ void printPlayerFire()
             break;
         }
     }
+    setColor(white);
 }
 void createEnemy1Hitbox()
 {
@@ -931,6 +937,7 @@ void eraseEnemy1Hitbox()
 }
 void printEnemy1()
 {
+    setColor(brown);
     for (int i = 0; i < enemyHeight; i++)
     {
         for (int j = 0; j < enemyWidth; j++)
@@ -939,6 +946,7 @@ void printEnemy1()
             cout << enemy1[i][j];
         }
     }
+    setColor(white);
 }
 void eraseEnemy1()
 {
@@ -1036,6 +1044,7 @@ void eraseEnemy1Fire()
 }
 void printEnemy1Fire()
 {
+    setColor(brown);
     for (int i = 0; i < boardHeight; i++)
     {
         if (board[i][e1FireY] == '!')
@@ -1045,6 +1054,7 @@ void printEnemy1Fire()
             break;
         }
     }
+    setColor(white);
 }
 // Enemy 2 Functions/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void createEnemy2Hitbox()
@@ -1079,6 +1089,7 @@ void eraseEnemy2Hitbox()
 }
 void printEnemy2()
 {
+    setColor(lightred);
     for (int i = 0; i < enemyHeight; i++)
     {
         for (int j = 0; j < enemyWidth; j++)
@@ -1087,6 +1098,7 @@ void printEnemy2()
             cout << enemy2[i][j];
         }
     }
+    setColor(white);
 }
 void eraseEnemy2()
 {
@@ -1184,6 +1196,7 @@ void eraseEnemy2Fire()
 }
 void printEnemy2Fire()
 {
+    setColor(lightred);
     for (int i = 0; i < boardHeight; i++)
     {
         if (board[i][e2FireY] == 'I')
@@ -1193,6 +1206,7 @@ void printEnemy2Fire()
             break;
         }
     }
+    setColor(white);
 }
 // Enemy 3 Functions/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void createEnemy3Hitbox()
@@ -1227,6 +1241,7 @@ void eraseEnemy3Hitbox()
 }
 void printEnemy3()
 {
+    setColor(lightblue);
     for (int i = 0; i < enemyHeight; i++)
     {
         for (int j = 0; j < enemyWidth; j++)
@@ -1235,6 +1250,7 @@ void printEnemy3()
             cout << enemy3[i][j];
         }
     }
+    setColor(white);
 }
 void eraseEnemy3()
 {
@@ -1332,6 +1348,7 @@ void eraseEnemy3Fire()
 }
 void printEnemy3Fire()
 {
+    setColor(lightblue);
     for (int i = 0; i < boardHeight; i++)
     {
         if (board[i][e3FireY] == '[')
@@ -1341,6 +1358,7 @@ void printEnemy3Fire()
             break;
         }
     }
+    setColor(white);
 }
 void setHighScore()
 {
