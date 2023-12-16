@@ -51,7 +51,7 @@ void changeDirectionEnemy1(char &direction);
 void createEnemy1Hitbox();
 void eraseEnemy1Hitbox();
 void moveEnemy1(char direction);
-int e1X = 6, e1Y = 9, e1Health = 5;
+int e1X = 2, e1Y = 9, e1Health = 5;
 // Enemy 1 Fire
 void enemy1Fire();
 void moveEnemy1Fire();
@@ -81,7 +81,7 @@ void changeDirectionEnemy3(char &direction);
 void createEnemy3Hitbox();
 void eraseEnemy3Hitbox();
 void moveEnemy3(char direction);
-int e3X = 6, e3Y = 45, e3Health = 5;
+int e3X = 2, e3Y = 45, e3Health = 5;
 // Enemy 3 Fire
 void enemy3Fire();
 void moveEnemy3Fire();
@@ -112,13 +112,13 @@ const int boardHeight = 36, boardWidth = 90;
 
 char board[boardHeight][boardWidth] = {
     "#########################################################################################",
-    "#                                     #                                                 #",
-    "#                                     #                                                 #",
-    "#                                     #                                                 #",
-    "#                                     #                                                 #",
-    "#                                     #                                                 #",
-    "#                                     #                                                 #",
-    "#                                     #                                                 #",
+    "#                                         ###                                           #",
+    "#                                         ###                                           #",
+    "#                                         ###                                           #",
+    "#                                         ###                                           #",
+    "#                                         ###                                           #",
+    "#                                         ###                                           #",
+    "#                                         ###                                           #",
     "#                                                                                       #",
     "#                                                                                       #",
     "#                                                                                       #",
@@ -588,35 +588,16 @@ void drawBoard()
     board[e1X][e1Y] = 'X';
     board[e2X][e2Y] = 'Y';
     board[e3X][e3Y] = 'Z';
+    printPlayer();
+    printEnemy1();
+    printEnemy2();
+    printEnemy3();
     for (int i = 0; i < boardHeight; i++)
     {
         for (int j = 0; j < boardWidth; j++)
         {
-            if (board[i][j] == 'p')
-            {
-                pY = j;
-                printPlayer();
-            }
-            else if (board[i][j] == 'X')
-            {
-                e1Y = j;
-                printEnemy1();
-            }
-            else if (board[i][j] == 'Y')
-            {
-                e2Y = j;
-                printEnemy2();
-            }
-            else if (board[i][j] == 'Z')
-            {
-                e3Y = j;
-                printEnemy3();
-            }
-            else
-            {
-                gotoxy(j, i);
-                cout << board[i][j];
-            }
+            gotoxy(j, i);
+            cout << board[i][j];
         }
     }
 }
@@ -1320,11 +1301,11 @@ void resetAllValues()
 {
     pX = 30;
     pY = 7;
-    e1X = 6;
+    e1X = 2;
     e1Y = 9;
     e2X = 14;
     e2Y = 56;
-    e3X = 6;
+    e3X = 2;
     e3Y = 45;
     pHealth = 5;
     e1Health = 5;
