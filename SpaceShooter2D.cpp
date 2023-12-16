@@ -292,26 +292,32 @@ mainMenu:
             }
             if (collision1)
             {
-                score += 10;
                 eraseEnemy1();
                 if (e1Health != 0)
+                {
+                    score += 10;
                     e1Health--;
+                }
                 collision1 = false;
             }
             else if (collision2)
             {
-                score += 10;
                 eraseEnemy2();
                 if (e2Health != 0)
+                {
+                    score += 10;
                     e2Health--;
+                }
                 collision2 = false;
             }
             else if (collision3)
             {
-                score += 10;
                 eraseEnemy3();
-                if (e3Health != 0) // Sometimes some hitboxes remain and the health goes to -1 and beyond
+                if (e3Health != 0)
+                { // Sometimes some hitboxes remain and the health goes to -1 and beyond
+                    score += 10;
                     e3Health--;
+                }
                 collision3 = false;
             }
             if (!e1Fire && !(e1Health <= 0) && enemyToMove == 0 && !barrier1)
