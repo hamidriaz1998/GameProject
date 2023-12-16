@@ -103,6 +103,7 @@ void setBarrierStatus(bool &barrier1, bool &barrier3);
 bool barrier1Erased = false, barrier3Erased = false;
 // Error Handling
 bool inBoard(char);
+void cleanChar(char);
 // File Handling
 void storeData();
 bool readData();
@@ -313,6 +314,11 @@ mainMenu:
                     score += 10;
                     e1Health--;
                 }
+                if (e1Health == 0)
+                {
+                    cleanChar(',');
+                    cleanChar('X');
+                }
                 collision1 = false;
             }
             else if (collision2)
@@ -323,6 +329,11 @@ mainMenu:
                     score += 10;
                     e2Health--;
                 }
+                if (e2Health == 0)
+                {
+                    cleanChar(';');
+                    cleanChar('Y');
+                }
                 collision2 = false;
             }
             else if (collision3)
@@ -332,6 +343,11 @@ mainMenu:
                 { // Sometimes some hitboxes remain and the health goes to -1 and beyond
                     score += 10;
                     e3Health--;
+                }
+                if (e3Health == 0)
+                {
+                    cleanChar('~');
+                    cleanChar('Z');
                 }
                 collision3 = false;
             }
@@ -427,6 +443,8 @@ mainMenu:
         gotoxy(X, Y++);
         cout << "Press Enter key to return to the main menu....................";
         cin >> temp;
+        resetBoard();
+        resetAllValues();
         goto mainMenu;
     }
     if (difficulty == 2)
@@ -1437,6 +1455,19 @@ bool inBoard(char c)
             if (board[i][j] == c)
             {
                 return true;
+            }
+        }
+    }
+}
+void cleanChar(char character)
+{
+    for (int i = 0; i < boardHeight; i++)
+    {
+        for (int j = 0; j < boardWidth; j++)
+        {
+            if (board[i][j] == character)
+            {
+                board[i][j] = ' ';
             }
         }
     }
