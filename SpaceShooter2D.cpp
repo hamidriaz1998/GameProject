@@ -1262,19 +1262,22 @@ void printEnemy3Fire()
 }
 void setHighScore()
 {
-    for (int i = 0; i < 5; i++)
+    int i;
+    for (i = 0; i < 5; i++)
     {
-        if (score == highScore[i])
-            break;
         if (score > highScore[i])
         {
-            highScore[i] = score;
-            for (int j = 4; j > i; j--)
-            {
-                highScore[j] = highScore[j - 1];
-            }
             break;
         }
+    }
+
+    if (i < 5) // if score is greater than any of the high scores
+    {
+        for (int j = 4; j > i; j--)
+        {
+            highScore[j] = highScore[j - 1];
+        }
+        highScore[i] = score;
     }
 }
 void setBarriers(bool &barrier1, bool &barrier3)
