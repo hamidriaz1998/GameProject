@@ -95,11 +95,12 @@ void setHighScore();
 int highScore[5] = {0, 0, 0, 0, 0};
 // Difficulty
 int difficulty = 1;
+void setBarriers(bool &barrier1, bool &barrier3);
 // Error Handling
 bool inBoard(char);
 // File Handling
 void storeData();
-void readData();
+bool readData();
 // New Game
 void resetAllValues();
 void resetBoard();
@@ -174,9 +175,16 @@ char enemy3[enemyHeight][enemyWidth] = {
     "   \\/   "};
 int main()
 {
-    readData();
+    if (!readData())
+    {
+        difficulty = 1;
+    }
 // Starting Page
 mainMenu:
+    // Setting Barriers based on difficulty
+    bool barrier1;
+    bool barrier3;
+    setBarriers(barrier1, barrier3);
     printBanner();
     printMenu();
     int choice = getNum("Enter your choice: ");
@@ -197,6 +205,7 @@ mainMenu:
         gotoxy(X, Y++);
         cout << "3. Hard" << endl;
         difficulty = getNum("Enter your choice: ");
+        goto mainMenu;
     }
     else if (choice == 3)
     {
@@ -252,7 +261,7 @@ mainMenu:
                     pFire = true;
                 }
             }
-            if (!(e1Health <= 0) && enemyToMove == 0)
+            if (!(e1Health <= 0) && enemyToMove == 0 && !barrier1)
             {
                 changeDirectionEnemy1(dir1);
                 moveEnemy1(dir1);
@@ -262,7 +271,7 @@ mainMenu:
                 changeDirectionEnemy2(dir2);
                 moveEnemy2(dir2);
             }
-            if (!(e3Health <= 0) && enemyToMove == 2)
+            if (!(e3Health <= 0) && enemyToMove == 2 && !barrier3)
             {
                 changeDirectionEnemy3(dir3);
                 moveEnemy3(dir3);
@@ -300,7 +309,7 @@ mainMenu:
                     e3Health--;
                 collision3 = false;
             }
-            if (!e1Fire && !(e1Health <= 0) && enemyToMove == 0)
+            if (!e1Fire && !(e1Health <= 0) && enemyToMove == 0 && !barrier1)
             {
                 enemy1Fire();
                 e1Fire = true;
@@ -326,7 +335,7 @@ mainMenu:
                 }
                 moveEnemy2Fire();
             }
-            if (!e3Fire && !(e3Health <= 0) && enemyToMove == 2)
+            if (!e3Fire && !(e3Health <= 0) && enemyToMove == 2 && !barrier3)
             {
                 enemy3Fire();
                 e3Fire = true;
@@ -588,6 +597,7 @@ void drawBoard()
     board[e1X][e1Y] = 'X';
     board[e2X][e2Y] = 'Y';
     board[e3X][e3Y] = 'Z';
+    board[8][43] = '#';
     printPlayer();
     printEnemy1();
     printEnemy2();
@@ -1254,6 +1264,24 @@ void setHighScore()
         }
     }
 }
+void setBarriers(bool &barrier1, bool &barrier3)
+{
+    if (difficulty == 1)
+    {
+        barrier1 = true;
+        barrier3 = true;
+    }
+    else if (difficulty == 2)
+    {
+        barrier1 = true;
+        barrier3 = false;
+    }
+    else
+    {
+        barrier1 = false;
+        barrier3 = false;
+    }
+}
 bool inBoard(char c)
 {
     for (int i = 0; i < boardHeight; i++)
@@ -1283,10 +1311,14 @@ void storeData()
     }
     f.close();
 }
-void readData()
+bool readData()
 {
     fstream f;
     f.open("gameData.txt", ios::in);
+    if (f.fail())
+    {
+        return false;
+    }
     string temp;
     getline(f, temp);
     difficulty = strToInt(temp);
@@ -1296,6 +1328,7 @@ void readData()
         highScore[i] = strToInt(temp);
     }
     f.close();
+    return true;
 }
 void resetAllValues()
 {
