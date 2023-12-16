@@ -368,6 +368,13 @@ mainMenu:
                     pcollision = false;
                 }
             }
+            if (coinCollision)
+            {
+                score += 20;
+                pHealth++;
+                eraseCoin();
+                coinCollision = false;
+            }
             if (score % 50 == 0 && score != 0)
             {
                 if (!coin)
@@ -375,13 +382,6 @@ mainMenu:
                     generateCoin();
                     coin = true;
                 }
-            }
-            if (coinCollision)
-            {
-                score += 20;
-                pHealth++;
-                eraseCoin();
-                coinCollision = false;
             }
             if (coin) // To prevent coin from disapperaing
             {
