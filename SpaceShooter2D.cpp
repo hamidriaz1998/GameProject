@@ -93,11 +93,13 @@ bool e3Fire = false, collision3 = false;
 int score = 0;
 void setHighScore();
 int highScore[5] = {0, 0, 0, 0, 0};
+// Difficulty
+int difficulty = 1;
 // Error Handling
 bool inBoard(char);
 // File Handling
-void storeHighScore();
-void readHighScore();
+void storeData();
+void readData();
 // New Game
 void resetAllValues();
 void resetBoard();
@@ -172,38 +174,46 @@ char enemy3[enemyHeight][enemyWidth] = {
     "   \\/   "};
 int main()
 {
-    readHighScore();
+    readData();
 // Starting Page
 mainMenu:
     printBanner();
     printMenu();
     int choice = getNum("Enter your choice: ");
-    if (choice == 4)
+    if (choice == 5)
     { // Exit
-        storeHighScore();
+        storeData();
         return 0;
     }
     else if (choice == 2)
     {
         printBanner();
         gotoxy(X, Y++);
+        cout << "Choose one of the following difficulties" << endl;
+        gotoxy(X, Y++);
+        cout << "1. Easy" << endl;
+        gotoxy(X, Y++);
+        cout << "2. Medium" << endl;
+        gotoxy(X, Y++);
+        cout << "3. Hard" << endl;
+        difficulty = getNum("Enter your choice: ");
+    }
+    else if (choice == 3)
+    {
+        printBanner();
+        gotoxy(X, Y++);
         cout << "High Score" << endl;
-        gotoxy(X, Y++);
-        cout << "1. " << highScore[0] << endl;
-        gotoxy(X, Y++);
-        cout << "2. " << highScore[1] << endl;
-        gotoxy(X, Y++);
-        cout << "3. " << highScore[2] << endl;
-        gotoxy(X, Y++);
-        cout << "4. " << highScore[3] << endl;
-        gotoxy(X, Y++);
-        cout << "5. " << highScore[4] << endl;
+        for (int i = 0; i < 5; i++)
+        {
+            gotoxy(X, Y++);
+            cout << i + 1 << ". " << highScore[i] << endl;
+        }
         gotoxy(X, Y++);
         cout << "Press any key to return to the main menu....................";
         getch();
         goto mainMenu;
     }
-    else if (choice == 3)
+    else if (choice == 4)
     { // Instructions
         printInstructions();
         goto mainMenu;
@@ -452,11 +462,13 @@ void printMenu()
     gotoxy(X, Y++);
     cout << "1. Play Game" << endl;
     gotoxy(X, Y++);
-    cout << "2. High Score" << endl;
+    cout << "2. Set difficulty" << endl;
     gotoxy(X, Y++);
-    cout << "3. Instructions" << endl;
+    cout << "3. High Score" << endl;
     gotoxy(X, Y++);
-    cout << "4. Exit" << endl;
+    cout << "4. Instructions" << endl;
+    gotoxy(X, Y++);
+    cout << "5. Exit" << endl;
 }
 void printInstructions()
 {
@@ -1275,10 +1287,11 @@ bool inBoard(char c)
     }
 }
 // File Handling
-void storeHighScore()
-{
+void storeData()
+{ // First line contains difficulty, next 5 lines contain high scores
     fstream f;
-    f.open("highScore.txt", ios::out);
+    f.open("gameData.txt", ios::out);
+    f << difficulty << endl;
     for (int i = 0; i < 5; i++)
     {
         f << highScore[i];
@@ -1289,21 +1302,17 @@ void storeHighScore()
     }
     f.close();
 }
-void readHighScore()
+void readData()
 {
     fstream f;
-    f.open("highScore.txt", ios::in);
-    if (f.fail())
-    {
-        cout << "Error in opening file: highScore.txt";
-        exit(1);
-    }
+    f.open("gameData.txt", ios::in);
     string temp;
-    int i = 0;
-    while (getline(f, temp))
+    getline(f, temp);
+    difficulty = strToInt(temp);
+    for (int i = 0; i < 5; i++)
     {
+        getline(f, temp);
         highScore[i] = strToInt(temp);
-        i++;
     }
     f.close();
 }
