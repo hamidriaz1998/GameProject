@@ -98,6 +98,8 @@ int difficulty = 1;
 void setBarriers(bool &barrier1, bool &barrier3);
 void printBarriers(bool barrier1, bool barrier3);
 void eraseBarriers(bool barrier1, bool barrier3);
+void setBarrierStatus(bool &barrier1, bool &barrier3);
+bool barrier1Erased = false, barrier3Erased = false;
 // Error Handling
 bool inBoard(char);
 // File Handling
@@ -381,13 +383,15 @@ mainMenu:
             }
             counter++;
             printScore();
-            Sleep(50);
+            setBarrierStatus(barrier1, barrier3);
+            // eraseBarriers(barrier1, barrier3);
             if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
             {
                 showCursor();
                 setHighScore();
                 break;
             }
+            Sleep(50);
         }
     }
     string temp;
@@ -1303,7 +1307,7 @@ void printBarriers(bool barrier1, bool barrier3)
 }
 void eraseBarriers(bool barrier1, bool barrier3)
 {
-    if (barrier3)
+    if (!barrier3)
     {
         for (int i = 43; i < boardWidth - 2; i++)
         {
@@ -1312,7 +1316,7 @@ void eraseBarriers(bool barrier1, bool barrier3)
             cout << " ";
         }
     }
-    if (barrier1)
+    if (!barrier1)
     {
         for (int i = 1; i < 44; i++)
         {
@@ -1320,6 +1324,27 @@ void eraseBarriers(bool barrier1, bool barrier3)
             gotoxy(i, 8);
             cout << " ";
         }
+    }
+}
+void setBarrierStatus(bool &barrier1, bool &barrier3)
+{
+    if (difficulty == 1 && e2Health <= 0 && !barrier3Erased)
+    {
+        barrier3 = false;
+        eraseBarriers(barrier1, barrier3);
+        barrier3Erased = true;
+    }
+    if (difficulty == 1 && e3Health <= 0 && !barrier1Erased)
+    {
+        barrier1 = false;
+        eraseBarriers(barrier1, barrier3);
+        barrier1Erased = true;
+    }
+    if (difficulty == 2 && e2Health <= 0 && e3Health <= 0 && !barrier1Erased)
+    {
+        barrier1 = false;
+        eraseBarriers(barrier1, barrier3);
+        barrier1Erased = true;
     }
 }
 bool inBoard(char c)
@@ -1395,6 +1420,8 @@ void resetAllValues()
     pcollision = false;
     coin = false;
     coinCollision = false;
+    barrier1Erased = false;
+    barrier3Erased = false;
 }
 void resetBoard()
 {
