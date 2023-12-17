@@ -696,8 +696,10 @@ void drawBoard()
 // Coin Functions
 void printCoin()
 {
+    setColor(yellow);
     gotoxy(coinY, coinX);
     cout << "$";
+    setColor(white);
 }
 void eraseCoin()
 {
