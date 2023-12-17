@@ -60,7 +60,7 @@ void moveEnemy1Fire();
 void eraseEnemy1Fire();
 void printEnemy1Fire();
 int e1FireX = 0, e1FireY = 0;
-bool e1Fire = false, collision1 = false;
+bool e1Fire = false, collision1 = false, pCollsionByE1 = false;
 // Enemy 2
 void eraseEnemy2();
 void printEnemy2();
@@ -75,7 +75,7 @@ void moveEnemy2Fire();
 void eraseEnemy2Fire();
 void printEnemy2Fire();
 int e2FireX = 0, e2FireY = 0;
-bool e2Fire = false, collision2 = false;
+bool e2Fire = false, collision2 = false, pCollsionByE2 = false;
 // Enemy 3
 void eraseEnemy3();
 void printEnemy3();
@@ -90,7 +90,7 @@ void moveEnemy3Fire();
 void eraseEnemy3Fire();
 void printEnemy3Fire();
 int e3FireX = 0, e3FireY = 0;
-bool e3Fire = false, collision3 = false;
+bool e3Fire = false, collision3 = false, pCollsionByE3 = false;
 // Score
 int score = 0;
 void setHighScore();
@@ -365,10 +365,26 @@ mainMenu:
                     if (score != 0)
                         score -= 10;
                     erasePlayer();
-                    if (pHealth != 0)
-                        pHealth--;
-                    pcollision = false;
                 }
+                if (pHealth != 0)
+                {
+                    if (pCollsionByE1)
+                    {
+                        pHealth -= 3;
+                        pCollsionByE1 = false;
+                    }
+                    else if (pCollsionByE2)
+                    {
+                        pHealth -= 1;
+                        pCollsionByE2 = false;
+                    }
+                    else if (pCollsionByE3)
+                    {
+                        pHealth -= 2;
+                        pCollsionByE3 = false;
+                    }
+                }
+                pcollision = false;
             }
             if (coinCollision)
             {
@@ -977,6 +993,7 @@ void moveEnemy1Fire()
                 if (board[i + 1][e1FireY] == 'p' || board[i + 1][e1FireY] == '.' || board[i][e1FireY + 1] == '.' || board[i][e1FireY - 1] == '.' || board[i][e1FireY + 1] == 'p' || board[i][e1FireY - 1] == 'p')
                 {
                     pcollision = true;
+                    pCollsionByE1 = true;
                     board[i][e1FireY] = ' ';
                     board[i + 1][e1FireY] = ' ';
                     e1Fire = false;
@@ -1129,6 +1146,7 @@ void moveEnemy2Fire()
                 if (board[i + 1][e2FireY] == 'p' || board[i + 1][e2FireY] == '.' || board[i][e2FireY + 1] == '.' || board[i][e2FireY - 1] == '.' || board[i][e2FireY + 1] == 'p' || board[i][e2FireY - 1] == 'p')
                 {
                     pcollision = true;
+                    pCollsionByE2 = true;
                     board[i][e2FireY] = ' ';
                     board[i + 1][e2FireY] = ' ';
                     e2Fire = false;
@@ -1281,6 +1299,7 @@ void moveEnemy3Fire()
                 if (board[i + 1][e3FireY] == 'p' || board[i + 1][e3FireY] == '.' || board[i][e3FireY + 1] == '.' || board[i][e3FireY - 1] == '.' || board[i][e3FireY + 1] == 'p' || board[i][e3FireY - 1] == 'p')
                 {
                     pcollision = true;
+                    pCollsionByE3 = true;
                     board[i][e3FireY] = ' ';
                     board[i + 1][e3FireY] = ' ';
                     e3Fire = false;
@@ -1356,23 +1375,23 @@ void setHealth()
     if (difficulty == 1)
     {
         e1Health = 5;
-        e2Health = 5;
-        e3Health = 5;
+        e2Health = 3;
+        e3Health = 4;
         pHealth = 7;
     }
     else if (difficulty == 2)
     {
-        e1Health = 6;
-        e2Health = 6;
+        e1Health = 7;
+        e2Health = 5;
         e3Health = 6;
-        pHealth = 5;
+        pHealth = 6;
     }
     else
     {
-        e1Health = 7;
-        e2Health = 7;
+        e1Health = 8;
+        e2Health = 6;
         e3Health = 7;
-        pHealth = 3;
+        pHealth = 4;
     }
 }
 void setBarriers(bool &barrier1, bool &barrier3)
@@ -1561,6 +1580,9 @@ void resetAllValues()
     collision2 = false;
     collision3 = false;
     pcollision = false;
+    pCollsionByE1 = false;
+    pCollsionByE2 = false;
+    pCollsionByE3 = false;
     coin = false;
     coinCollision = false;
     barrier1Erased = false;
