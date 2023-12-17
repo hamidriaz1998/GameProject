@@ -1329,6 +1329,7 @@ void printEnemy3Fire()
     }
     setColor(white);
 }
+// Score Functions
 void setHighScore()
 {
     int i;
@@ -1349,6 +1350,7 @@ void setHighScore()
         highScore[i] = score;
     }
 }
+// Difficulty Functions
 void setHealth()
 {
     if (difficulty == 1)
@@ -1450,6 +1452,7 @@ void setBarrierStatus(bool &barrier1, bool &barrier3)
         barrier1Erased = true;
     }
 }
+// Error Handling
 bool inBoard(char c)
 {
     for (int i = 0; i < boardHeight; i++)
@@ -1515,6 +1518,13 @@ void loadBoard()
 {
     fstream f;
     f.open("board.txt", ios::in);
+    if (f.fail())
+    {
+        setColor(red);
+        cout << "Board.txt was not found..........Exiting the game." << endl;
+        setColor(white);
+        exit(1);
+    }
     string line;
     int row = 0;
     while (getline(f, line))
@@ -1527,6 +1537,7 @@ void loadBoard()
     }
     f.close();
 }
+// Reset Functions
 void resetAllValues()
 {
     pX = 30;
