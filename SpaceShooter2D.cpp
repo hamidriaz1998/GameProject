@@ -229,7 +229,7 @@ mainMenu:
         int counter = 0;
         while (true)
         {
-            int enemyToMove = counter % 3; // To move each enemy one by one to optimize the game
+            int enemyToMove = counter % 6; // To move each enemy one by one to optimize the game
             if (GetAsyncKeyState(VK_LEFT))
             {
                 movePlayer('l');
@@ -253,7 +253,7 @@ mainMenu:
                 exit = true;
                 break;
             }
-            if (!(e1Health <= 0) && enemyToMove == 0 && !barrier1)
+            if (!(e1Health <= 0) && (enemyToMove == 0 || enemyToMove == 2 || enemyToMove == 4) && !barrier1)
             {
                 changeDirectionEnemy1(dir1);
                 moveEnemy1(dir1);
@@ -263,7 +263,7 @@ mainMenu:
                 changeDirectionEnemy2(dir2);
                 moveEnemy2(dir2);
             }
-            if (!(e3Health <= 0) && enemyToMove == 2 && !barrier3)
+            if (!(e3Health <= 0) && (enemyToMove == 3 || enemyToMove == 5) && !barrier3)
             {
                 changeDirectionEnemy3(dir3);
                 moveEnemy3(dir3);
