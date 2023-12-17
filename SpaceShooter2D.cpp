@@ -360,32 +360,32 @@ mainMenu:
                     enemy3Fire();
                 }
                 moveEnemy3Fire();
-                if (pcollision)
-                {
-                    if (score != 0)
-                        score -= 10;
-                    erasePlayer();
-                }
-                if (pHealth != 0)
-                {
-                    if (pCollsionByE1)
-                    {
-                        pHealth -= 3;
-                        pCollsionByE1 = false;
-                    }
-                    else if (pCollsionByE2)
-                    {
-                        pHealth -= 1;
-                        pCollsionByE2 = false;
-                    }
-                    else if (pCollsionByE3)
-                    {
-                        pHealth -= 2;
-                        pCollsionByE3 = false;
-                    }
-                }
-                pcollision = false;
             }
+            if (pcollision)
+            {
+                if (score != 0)
+                    score -= 10;
+                erasePlayer();
+            }
+            if (pHealth != 0)
+            {
+                if (pCollsionByE1)
+                {
+                    pHealth -= 3;
+                    pCollsionByE1 = false;
+                }
+                else if (pCollsionByE2)
+                {
+                    pHealth -= 1;
+                    pCollsionByE2 = false;
+                }
+                else if (pCollsionByE3)
+                {
+                    pHealth -= 2;
+                    pCollsionByE3 = false;
+                }
+            }
+            pcollision = false;
             if (coinCollision)
             {
                 score += 20;
@@ -409,7 +409,7 @@ mainMenu:
             counter++;
             printScore();
             setBarrierStatus(barrier1, barrier3);
-            if (pHealth == 0 || (e1Health == 0 && e2Health == 0 && e3Health == 0))
+            if (pHealth <= 0 || (e1Health <= 0 && e2Health <= 0 && e3Health <= 0))
             {
                 showCursor();
                 setHighScore();
