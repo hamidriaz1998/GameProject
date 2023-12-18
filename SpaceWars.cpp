@@ -416,7 +416,7 @@ mainMenu:
                 difficulty++;
                 break;
             }
-            Sleep(50);
+            Sleep(20);
         }
     }
     string temp;
@@ -428,7 +428,7 @@ mainMenu:
         gotoxy(X, Y++);
         cout << "Your Score is: " << score << endl;
         gotoxy(X, Y++);
-        cout << "Press Enter key to return to the main menu....................";
+        cout << "Enter 1 to return to the main menu....................";
         cin >> temp;
         resetBoard();
         resetAllValues();
@@ -446,7 +446,7 @@ mainMenu:
             gotoxy(X, Y++);
             cout << "Your Score is " << score << endl;
             gotoxy(X, Y++);
-            cout << "Press Enter key to return to the main menu....................";
+            cout << "Enter 1 to return to the main menu....................";
             cin >> temp;
             resetBoard();
             resetAllValues();
@@ -461,7 +461,7 @@ mainMenu:
             gotoxy(X, Y++);
             cout << "Your Score is " << score << endl;
             gotoxy(X, Y++);
-            cout << "Press Enter key to return to the main menu....................";
+            cout << "Enter 1 to return to the main menu....................";
             cin >> temp;
             resetBoard();
             resetAllValues();
@@ -476,7 +476,7 @@ mainMenu:
         gotoxy(X, Y++);
         cout << "Your current score is: " << score << endl;
         gotoxy(X, Y++);
-        cout << "Press Enter key to continue to the next difficulty level....................";
+        cout << "Enter 1 to continue to the next difficulty level....................";
         cin >> temp;
         goto playGame;
     }
