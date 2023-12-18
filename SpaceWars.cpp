@@ -515,7 +515,7 @@ void printBanner()
 {
     system("cls");
     X = (getScreenWidth() - 67) / 2;
-    Y = 0;
+    Y = 2;
     setColor(cyan);
     gotoxy(X, Y++);
     cout << "###############################################################";
