@@ -574,7 +574,15 @@ void printInstructions()
     gotoxy(X, Y++);
     cout << "- You can collect coins to increase your score and health." << endl;
     gotoxy(X, Y++);
-    cout << "- You can press escape to exit the game.................." << endl;
+    cout << "- You can press escape to exit the game." << endl;
+    gotoxy(X, Y++);
+    cout << "- The game has three difficulty levels: Easy, Medium, and Hard." << endl;
+    gotoxy(X, Y++);
+    cout << "  - Easy: Enemies move slower and have less health." << endl;
+    gotoxy(X, Y++);
+    cout << "  - Medium: Enemies move at a moderate speed and have moderate health." << endl;
+    gotoxy(X, Y++);
+    cout << "  - Hard: Enemies move faster and have more health." << endl;
     setColor(white);
     Y++;
     gotoxy(X, Y++);
