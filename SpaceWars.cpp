@@ -113,6 +113,7 @@ void loadBoard();
 // New Game
 void resetAllValues();
 void resetBoard();
+bool gameOver = false;
 
 const int playerHeight = 5;
 const int playerWidth = 9;
@@ -418,7 +419,14 @@ mainMenu:
             printScore();
             setBarrierStatus(barrier1, barrier3);
             // Game Over
-            if (pHealth <= 0 || (e1Health <= 0 && e2Health <= 0 && e3Health <= 0))
+            if (pHealth <= 0)
+            {
+                gameOver = true;
+                showCursor();
+                setHighScore();
+                break;
+            }
+            if (e1Health <= 0 && e2Health <= 0 && e3Health <= 0)
             {
                 showCursor();
                 setHighScore();
@@ -444,39 +452,37 @@ mainMenu:
         resetAllValues();
         goto mainMenu;
     }
+    if (gameOver)
+    {
+        printBanner();
+        gotoxy(X, Y++);
+        cout << "Game Over" << endl;
+        gotoxy(X, Y++);
+        cout << "Your Score is " << score << endl;
+        gotoxy(X, Y++);
+        cout << "Enter 1 to return to the main menu....................";
+        cin >> temp;
+        resetBoard();
+        resetAllValues();
+        difficulty = 1;
+        goto mainMenu;
+    }
     if (difficulty == 2)
         barrier1Erased = false;
     if (difficulty == 4)
     {
-        if (pHealth == 0)
-        {
-            printBanner();
-            gotoxy(X, Y++);
-            cout << "Game Over" << endl;
-            gotoxy(X, Y++);
-            cout << "Your Score is " << score << endl;
-            gotoxy(X, Y++);
-            cout << "Enter 1 to return to the main menu....................";
-            cin >> temp;
-            resetBoard();
-            resetAllValues();
-            difficulty = 1;
-            goto mainMenu;
-        }
-        else
-        {
-            printBanner();
-            gotoxy(X, Y++);
-            cout << "You Win" << endl;
-            gotoxy(X, Y++);
-            cout << "Your Score is " << score << endl;
-            gotoxy(X, Y++);
-            cout << "Enter 1 to return to the main menu....................";
-            cin >> temp;
-            resetBoard();
-            resetAllValues();
-            goto mainMenu;
-        }
+
+        printBanner();
+        gotoxy(X, Y++);
+        cout << "You Win" << endl;
+        gotoxy(X, Y++);
+        cout << "Your Score is " << score << endl;
+        gotoxy(X, Y++);
+        cout << "Enter 1 to return to the main menu....................";
+        cin >> temp;
+        resetBoard();
+        resetAllValues();
+        goto mainMenu;
     }
     else
     {
@@ -1616,6 +1622,7 @@ void resetAllValues()
     coinCollision = false;
     barrier1Erased = false;
     barrier3Erased = false;
+    gameOver = false;
 }
 void resetBoard()
 {
