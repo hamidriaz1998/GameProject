@@ -416,7 +416,7 @@ mainMenu:
                 difficulty++;
                 break;
             }
-            Sleep(20);
+            Sleep(30);
         }
     }
     string temp;
