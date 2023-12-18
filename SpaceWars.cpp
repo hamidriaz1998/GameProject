@@ -171,7 +171,7 @@ mainMenu:
         return 0;
     }
     else if (choice == 2)
-    {
+    { // Set Difficulty
         printBanner();
         gotoxy(X, Y++);
         setColor(lightblue);
@@ -187,7 +187,7 @@ mainMenu:
         goto mainMenu;
     }
     else if (choice == 3)
-    {
+    { // High Score
         printBanner();
         gotoxy(X, Y++);
         setColor(lightblue);
@@ -227,9 +227,10 @@ mainMenu:
         printEnemy3();
         hideCursor();
         int counter = 0;
-        while (true)
+        while (true) // Game Loop
         {
             int enemyToMove = counter % 6; // To move each enemy one by one to optimize the game
+            // Player Controls
             if (GetAsyncKeyState(VK_LEFT))
             {
                 movePlayer('l');
@@ -248,11 +249,13 @@ mainMenu:
             }
             else if (GetAsyncKeyState(VK_ESCAPE))
             {
+                // Exit
                 showCursor();
                 setHighScore();
                 exit = true;
                 break;
             }
+            // Enemy Movement
             if (!(e1Health <= 0) && (enemyToMove == 0 || enemyToMove == 2 || enemyToMove == 4) && !barrier1)
             {
                 changeDirectionEnemy1(dir1);
@@ -269,7 +272,7 @@ mainMenu:
                 moveEnemy3(dir3);
             }
 
-            if (pFire)
+            if (pFire) // Player Fire
             {
                 if (!inBoard('|')) // Handling the error, When bullet disapper and cannot be fired again
                 {
@@ -277,6 +280,7 @@ mainMenu:
                 }
                 movePlayerFire();
             }
+            // Player Fire Collsion Detections
             if (collision1)
             {
                 eraseEnemy1();
@@ -322,6 +326,7 @@ mainMenu:
                 }
                 collision3 = false;
             }
+            // Enemy Fire
             if (!e1Fire && !(e1Health <= 0) && enemyToMove == 0 && !barrier1)
             {
                 enemy1Fire();
@@ -361,6 +366,7 @@ mainMenu:
                 }
                 moveEnemy3Fire();
             }
+            // Enemy Fire Collsion Detections
             if (pcollision)
             {
                 if (score != 0)
@@ -386,6 +392,7 @@ mainMenu:
                 }
             }
             pcollision = false;
+            // Coin Collsion
             if (coinCollision)
             {
                 score += 20;
@@ -393,6 +400,7 @@ mainMenu:
                 eraseCoin();
                 coinCollision = false;
             }
+            // Coin Generation
             if (score % 50 == 0 && score != 0)
             {
                 if (!coin)
@@ -409,6 +417,7 @@ mainMenu:
             counter++;
             printScore();
             setBarrierStatus(barrier1, barrier3);
+            // Game Over
             if (pHealth <= 0 || (e1Health <= 0 && e2Health <= 0 && e3Health <= 0))
             {
                 showCursor();
@@ -419,6 +428,7 @@ mainMenu:
             Sleep(30);
         }
     }
+    // Game Over Screens
     string temp;
     if (exit)
     {
@@ -481,6 +491,8 @@ mainMenu:
         goto playGame;
     }
 }
+
+// Function Starts
 void gotoxy(int x, int y)
 {
     COORD coordinates;
@@ -665,6 +677,7 @@ int getNum(string prompt)
         }
     }
 }
+// Input Validation
 bool checkInt(string num)
 {
     for (int i = 0; i < num.length(); i++)
