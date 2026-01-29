@@ -4,3 +4,4 @@
 .vscode
 test.cpp
 !board.txt
+build
